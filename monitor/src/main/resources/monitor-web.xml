@@ -13,7 +13,7 @@
 		http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
 	
 	<mvc:annotation-driven />	
-	<context:component-scan base-package="org.cmg.web" />
+	<context:component-scan base-package="org.cmg" />
 	
 	<!-- OMG this sucked, took long time to find 'right' location magic string.  Despite online books, posts
 	     looks like resources MUST go under WEB-INF, test on tomcat and jetty
@@ -27,5 +27,5 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-
+	<bean class="org.cmg.service.MonitorServiceImpl" />
 </beans>

@@ -1,5 +1,8 @@
 package org.cmg.service;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.cmg.data.MonitorData;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -13,6 +16,8 @@ import org.joda.time.format.DateTimeFormatter;
  *
  */
 public class MonitorServiceImpl implements MonitorService {
+	
+	private static final Logger logger = Logger.getLogger(MonitorServiceImpl.class.getName());
 
 	@Override
 	public MonitorData getMonitorData()
@@ -33,8 +38,10 @@ public class MonitorServiceImpl implements MonitorService {
 		return historyData;
 	}
 	
+	@Override
 	public void performMonitorControlAction(ControlAction action)
 	{
-		// TODO
+		// TODO 
+		logger.log(Level.INFO, "Performing control action " + action);
 	}
 }

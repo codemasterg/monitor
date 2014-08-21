@@ -22,17 +22,47 @@ $(document).ready(function(){
 	    $("#controlText").attr("hidden", "true");
 	  });
   
-  $("#controlButton").click(controlDetection);
+  $("#controlButton").click(executeControlFunction);
   
   // select #home in menu by default
   $("#home").click();
 });
 
-function controlDetection()
+function executeControlFunction()
 {
 	var buttonLabel = $(this).prop('value');
+    
+    // disable button for duration of ajax call
+    $(this).prop('disabled', true);
 	
-	// TODO make ajax call with action to perform
+    // fire off the request to monitor controller
+    request = $.ajax({
+        url: window.location.pathname + "action",
+        type: "post",
+        data: {'action':buttonLabel}
+    });
+
+    // callback handler that will be called on success
+    request.done(function (response, textStatus, jqXHR){
+        // log a message to the console
+        console.log("Hooray, it worked!");
+    });
+
+    // callback handler that will be called on failure
+    request.fail(function (jqXHR, textStatus, errorThrown){
+        // log the error to the console
+        console.error(
+            "The following error occured: "+
+            textStatus, errorThrown
+        );
+    });
+    
+    // callback handler that will be called regardless
+    // if the request failed or succeeded
+    request.always(function () {
+        // reenable the control button
+    	$("#controlButton").prop('disabled', false);
+    });
 	
 	// toggle button label
 	if (buttonLabel == 'Disable')

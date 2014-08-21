@@ -12,7 +12,7 @@
     <spring.version>4.0.6.RELEASE</spring.version>
     <jdk.version>1.7</jdk.version>
     <pi4j.version>0.0.5</pi4j.version>
-</properties>
+</properties> 
   
   <dependencies>
      <dependency>
@@ -45,7 +45,12 @@
 		<version>2.4</version>
 	</dependency>
 
-    
+	<dependency>
+		<groupId>javax.inject</groupId>
+		<artifactId>javax.inject</artifactId>
+		<version>1</version>
+	</dependency>
+  
 
 	<!-- Jetty does not support JSPs out of the box, so monitor app must include jar 
 	<dependency>

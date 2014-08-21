@@ -11,6 +11,8 @@ import org.cmg.data.MonitorData;
  */
 public interface MonitorService {
 
-	 MonitorData getMonitorData();
+	MonitorData getMonitorData();
+
+	void performMonitorControlAction(ControlAction action);
 
 }
