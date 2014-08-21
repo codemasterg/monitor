@@ -1,5 +1,16 @@
+/**
+ * 
+ */
 package org.cmg.service;
 
-public class MonitorService {
+import org.cmg.data.MonitorData;
+
+/**
+ * @author greg
+ *
+ */
+public interface MonitorService {
+
+	 MonitorData getMonitorData();
 
 }
