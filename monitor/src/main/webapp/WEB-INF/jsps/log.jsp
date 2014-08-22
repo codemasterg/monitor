@@ -44,8 +44,8 @@
 				<a class="pure-menu-heading" href="#">Functions</a>
 
 				<ul>
-					<li id="home"><a href="/">Home</a></li>
-					<li id="control"><a href="#">Enable / Disable</a></li>
+					<li id="home"><a href="#">Home</a></li>
+					<li id="control"><a href="/">Enable / Disable</a></li>
 
 					<li id="schedule"><a href="#">Schedule</a>
 					</li>
@@ -69,41 +69,7 @@
 				<h2>Motion Detection Manager</h2>
 			</div>
 
-			<div id="homePage" class="content" >
-				<h2 class="content-subhead">At a Glance</h2>
-				<p>
-					<b>Days Up:</b> ${monitorData.daysUp} <br>
-					<b>Number of Intrusions in the Past Month:</b> ${monitorData.numDetection} <br>
-					<b>Most Recent Detection On:</b> ${monitorData.mostRecentDetectionDate }
-				</p>
-
-				<h2 class="content-subhead">Most recent photo captures</h2>
-				<p>.</p>
-
-				<div class="pure-g">
-					<div class="pure-u-1-4">
-						<img class="pure-img-responsive"
-							src="https://lh4.googleusercontent.com/DCTDK2hXslKlEPfXgE4Aqs8NL_qia5OVUWomqhzYBA0=w305-h228-p-no"
-							alt="Peyto Lake">
-					</div>
-					<div class="pure-u-1-4">
-						<img class="pure-img-responsive"
-							src="https://lh3.googleusercontent.com/Rqvb6xY-GIVtkv9vlMkcCWqaldLjbdDYmN-YVqnyDbc=w305-h228-p-no"
-							alt="Train">
-					</div>
-					<div class="pure-u-1-4">
-						<img class="pure-img-responsive"
-							src="https://lh5.googleusercontent.com/cJYrigMahU5LwBsCkTIJTvgOD4jE-s7yrySnjC6kC1g=w276-h207-p-no"
-							alt="T-Shirt Store">
-					</div>
-					<div class="pure-u-1-4">
-						<img class="pure-img-responsive"
-							src="https://lh5.googleusercontent.com/NhIGuE5VzXnkqvach_F93Zgytk_6jBUTpeIvUkys4-0=w306-h228-p-no"
-							alt="Mountain">
-					</div>
-				</div>
-			</div>
-			<div class="content">
+						<div class="content">
 				<!-- hidden elements at startup, made visible based on user menu selection.  See monitor.js -->
 				
 				<p id="controlText" hidden="true">Click to enable / disable
@@ -112,6 +78,14 @@
 					<input type='button' value='Disable' id='controlButton'>
 				</p>
 				
+				<p id="logText" >Log viewer, most recent appear first. <br>
+					
+					<textarea rows="10" cols="70">
+						<c:forEach var="rec" items="${logRecord}" varStatus="loopCounter">
+	                       ${rec}
+	                    </c:forEach>
+					</textarea>
+				</p>
 			</div>
 		</div>
 	</div>

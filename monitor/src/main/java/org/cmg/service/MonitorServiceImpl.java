@@ -52,6 +52,6 @@ public class MonitorServiceImpl implements MonitorService {
 		
 		logger.log(Level.INFO, "Log records requested.");
 		
-		return Collections.nCopies(211, "Dummy Log Rec"); 
+		return Collections.nCopies(211, new DateTime().toString()); 
 	}
 }

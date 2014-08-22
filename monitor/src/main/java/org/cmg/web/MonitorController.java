@@ -78,6 +78,6 @@ public class MonitorController {
 		List<String> logRecs = monitorService.getLogRecords(Level.ALL);
 		model.addAttribute("logRecord", logRecs);
 		
-		return "index";
+		return "log";
 	}
 }

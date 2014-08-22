@@ -1,6 +1,8 @@
 /**
  * 
  */
+
+logClicked = false;
 $(document).ready(function(){
 	
   // user requested enable/disable of email notifications and photo taking
@@ -9,28 +11,25 @@ $(document).ready(function(){
 	deselectAll();
     $(this).addClass("menu-item-divided pure-menu-selected active");
     
-    // hide all other content
-    $(".content-subhead").hide();
-    $(".pure-g").hide();
-    $("#logText").attr("hidden", "true");
+    // hide main content
+    $("#homePage").hide();
+    $("#homePage").attr("hidden", "true");
+    $("#logText").hide();
     
-    // then make control paragraph and its contents visible
-    $("#controlText").removeAttr("hidden");  // make visible
+    $("#controlText").removeAttr("hidden");
+   
+  
   });
   
   // user requested log viewer
   $("#log").click(function(event){
+	loadLog();
 	event.preventDefault();
 	deselectAll();
     $(this).addClass("menu-item-divided pure-menu-selected active");
     
-    // hide all other content
-    $(".content-subhead").hide();
-    $(".pure-g").hide();
-    $("#controlText").attr("hidden", "true");
     
-    $("#logText").removeAttr("hidden");  // make visible
-    loadLog();
+    
   });
   
   // home section is also default on 1st page load
@@ -38,16 +37,19 @@ $(document).ready(function(){
 		event.preventDefault();
 		deselectAll();
 	    $(this).addClass("menu-item-divided pure-menu-selected active");
-	    $(".content-subhead").show();
-	    $(".pure-g").show();
+	    $("#homePage").show();
+	    
 	    $("#controlText").attr("hidden", "true");
-	    $("#logText").attr("hidden", "true");
+	    $("#controlText").hide();
+	 
+	    window.location.pathname = "/monitor;"
+	    //window.location.reload();
 	  });
   
   $("#controlButton").click(executeControlButton);
   
   // select #home in menu by default
-  $("#home").click();
+ // $("#home").click();
 });
 
 /**
@@ -62,7 +64,7 @@ function executeControlButton()
 	
     // fire off the request to monitor controller
     request = $.ajax({
-        url: window.location.pathname + "action",
+        url: "action",
         type: "post",
         data: {'action':buttonLabel}
     });
@@ -71,6 +73,7 @@ function executeControlButton()
     request.done(function (response, textStatus, jqXHR){
         // log a message to the console
         console.log("Hooray, it worked!");
+        $("#control").click();
     });
 
     // callback handler that will be called on failure
@@ -102,9 +105,31 @@ function executeControlButton()
 
 function loadLog()
 {
+	
+	var logLoadURL = window.location.pathname;
+	
+	if (logLoadURL.indexOf("/log") == -1)
+	{
+		window.location.pathname += "log";
+	}
+	else
+		{
+		window.location.reload(true);
+		}
+	
+	 
+	
     // fire off the request to monitor controller
-	var logLoadURL = window.location.pathname + "log";
-
+	/*
+	
+	var logLoadURL = window.location.pathname;
+	
+	if (logLoadURL.indexOf("/log") == -1)
+	{
+		logLoadURL = window.location.pathname + "log";
+	}
+	
+	
     request = $.ajax({
         url: logLoadURL,
         type: "get",
@@ -115,6 +140,18 @@ function loadLog()
     request.done(function (response, textStatus, jqXHR){
         // log a message to the console
         console.log("Hooray, it worked!");
+        logLoaded=true;
+    	var logLoadURL = window.location.pathname;
+    	
+    	if (logLoadURL.indexOf("/log") == -1)
+    	{
+    		window.location += "log";
+    	}
+    	else
+    		{
+    		window.location.reload();
+    		}
+        
     });
 
     // callback handler that will be called on failure
@@ -125,8 +162,7 @@ function loadLog()
             textStatus, errorThrown
         );
     });
-   
-    
+    */
 }
 
 function deselectAll() {
