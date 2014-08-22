@@ -122,16 +122,10 @@ function loadLog()
     // fire off the request to monitor controller
 	/*
 	
-	var logLoadURL = window.location.pathname;
-	
-	if (logLoadURL.indexOf("/log") == -1)
-	{
-		logLoadURL = window.location.pathname + "log";
-	}
 	
 	
     request = $.ajax({
-        url: logLoadURL,
+        url: "log",
         type: "get",
         data: {'level':"ALL"}
     });
