@@ -1,6 +1,8 @@
 package org.cmg.web;
 
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import javax.inject.Inject;
 import javax.print.attribute.standard.DateTimeAtCompleted;
@@ -14,6 +16,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,16 +38,22 @@ public class MonitorController {
 	 * Populate monitor data bean and return home page.
 	 */
 	@RequestMapping(value="/", method=RequestMethod.GET)
-	public String serveHomePage(Map<String,Object> model)
+	public String serveHomePage(Model model)
 	{
 		
 		
 		MonitorData historyData = monitorService.getMonitorData();
 		
-		model.put("monitorData", historyData);
+		model.addAttribute("monitorData", historyData);
 		return "index";
 	}
 	
+	/**
+	 * Execute requested control action (e.g enable / disable notifications)
+	 * 
+	 * @param actionString see ControlAtion enum for allowable action values
+	 * @return
+	 */
 	@RequestMapping(value="/action", method=RequestMethod.POST)
 	public String performControlAction(@RequestParam("action") String actionString)
 	{
@@ -57,4 +66,18 @@ public class MonitorController {
 		return "index";
 	}
 
+	/**
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/log", method=RequestMethod.GET)
+	public String loadLogRecords(Model model)
+	{
+	
+		List<String> logRecs = monitorService.getLogRecords(Level.ALL);
+		model.addAttribute("logRecord", logRecs);
+		
+		return "index";
+	}
 }

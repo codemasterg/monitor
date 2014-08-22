@@ -1,5 +1,7 @@
 package org.cmg.service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,5 +45,13 @@ public class MonitorServiceImpl implements MonitorService {
 	{
 		// TODO 
 		logger.log(Level.INFO, "Performing control action " + action);
+	}
+
+	@Override
+	public List<String> getLogRecords(Level all) {
+		
+		logger.log(Level.INFO, "Log records requested.");
+		
+		return Collections.nCopies(211, "Dummy Log Rec"); 
 	}
 }

@@ -3,16 +3,37 @@
  */
 $(document).ready(function(){
 	
-  // stop/start button to enable/disable email notifications and photo taking
+  // user requested enable/disable of email notifications and photo taking
   $("#control").click(function(event){
 	event.preventDefault();
 	deselectAll();
     $(this).addClass("menu-item-divided pure-menu-selected active");
+    
+    // hide all other content
     $(".content-subhead").hide();
     $(".pure-g").hide();
-    $("#controlText").removeAttr("hidden");
+    $("#logText").attr("hidden", "true");
+    
+    // then make control paragraph and its contents visible
+    $("#controlText").removeAttr("hidden");  // make visible
   });
   
+  // user requested log viewer
+  $("#log").click(function(event){
+	event.preventDefault();
+	deselectAll();
+    $(this).addClass("menu-item-divided pure-menu-selected active");
+    
+    // hide all other content
+    $(".content-subhead").hide();
+    $(".pure-g").hide();
+    $("#controlText").attr("hidden", "true");
+    
+    $("#logText").removeAttr("hidden");  // make visible
+    loadLog();
+  });
+  
+  // home section is also default on 1st page load
   $("#home").click(function(event){
 		event.preventDefault();
 		deselectAll();
@@ -20,15 +41,19 @@ $(document).ready(function(){
 	    $(".content-subhead").show();
 	    $(".pure-g").show();
 	    $("#controlText").attr("hidden", "true");
+	    $("#logText").attr("hidden", "true");
 	  });
   
-  $("#controlButton").click(executeControlFunction);
+  $("#controlButton").click(executeControlButton);
   
   // select #home in menu by default
   $("#home").click();
 });
 
-function executeControlFunction()
+/**
+ * Linked to enable / disable button (i.e. #controlButton).
+ */
+function executeControlButton()
 {
 	var buttonLabel = $(this).prop('value');
     
@@ -73,6 +98,35 @@ function executeControlFunction()
 	{
 		$(this).prop('value', 'Disable');
 	}
+}
+
+function loadLog()
+{
+    // fire off the request to monitor controller
+	var logLoadURL = window.location.pathname + "log";
+
+    request = $.ajax({
+        url: logLoadURL,
+        type: "get",
+        data: {'level':"ALL"}
+    });
+
+    // callback handler that will be called on success
+    request.done(function (response, textStatus, jqXHR){
+        // log a message to the console
+        console.log("Hooray, it worked!");
+    });
+
+    // callback handler that will be called on failure
+    request.fail(function (jqXHR, textStatus, errorThrown){
+        // log the error to the console
+        console.error(
+            "The following error occured: "+
+            textStatus, errorThrown
+        );
+    });
+   
+    
 }
 
 function deselectAll() {

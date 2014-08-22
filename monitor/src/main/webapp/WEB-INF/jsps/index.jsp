@@ -44,8 +44,8 @@
 				<a class="pure-menu-heading" href="#">Functions</a>
 
 				<ul>
-					<li id="home"><a href="#">Home</a></li>
-					<li id="control"><a href="#">Stop/Start</a></li>
+					<li id="home"><a href="/">Home</a></li>
+					<li id="control"><a href="#">Enable / Disable</a></li>
 
 					<li id="schedule"><a href="#">Schedule</a>
 					</li>
@@ -103,11 +103,21 @@
 					</div>
 				</div>
 
-
+				<!-- hidden elements at startup, made visible based on user menu selection.  See monitor.js -->
+				
 				<p id="controlText" hidden="true">Click to enable / disable
 					email notifications and photo capture.
 					
 					<input type='button' value='Disable' id='controlButton'>
+				</p>
+				
+				<p id="logText" hidden="true">Log viewer, most recent appear first. <br>
+					
+					<textarea rows="10" cols="70">
+						<c:forEach var="rec" items="${logRecord}" varStatus="loopCounter">
+	                       ${rec}
+	                    </c:forEach>
+					</textarea>
 				</p>
 			</div>
 		</div>
