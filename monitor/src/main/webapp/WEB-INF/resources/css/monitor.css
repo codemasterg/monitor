@@ -1,0 +1,31 @@
+.warningText {
+	color: red;
+	font-weight: bold;
+	font-style: italic;
+	text-decoration: underline;
+}
+
+.normalStatusText {
+	color: green;
+	font-weight: bolder;
+}
+
+.abnomrmalStatusText {
+	color: brown;
+	font-weight: bolder;
+}
+
+.unknownStatusText {
+	color: grey;
+	text-decoration: line-through;
+	font-weight: bold;
+	
+}
+
+.logText  {
+	width: 6.5in;
+	height: 3in;
+	border: 3px solid #cccccc;
+	padding: 5px;
+	font-family: Tahoma, sans-serif;
+}

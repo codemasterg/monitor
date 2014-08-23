@@ -49,4 +49,9 @@ public class MonitorData implements Serializable {
 	public DateTime getStartTime() {
 		return startTime;
 	}
+
+	public void setStartTime(DateTime startTime) {
+		this.startTime = startTime;
+	}
+	
 }
