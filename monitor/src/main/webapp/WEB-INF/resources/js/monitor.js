@@ -1,8 +1,10 @@
 /**
- * 
+ * Implement the behavior of index, log, and control JSPs.
  */
 
-logClicked = false;
+/**
+ * Register click handlers following page load
+ */
 $(document).ready(function(){
 	
   // user requested enable/disable of email notifications and photo taking
@@ -11,12 +13,7 @@ $(document).ready(function(){
 	deselectAll();
     $(this).addClass("menu-item-divided pure-menu-selected active");
     
-    // hide main content
-    $("#homePage").hide();
-    $("#homePage").attr("hidden", "true");
-    $("#logText").hide();
-    
-    $("#controlText").removeAttr("hidden");
+    requestMonitorStatus();
    
   
   });
@@ -38,19 +35,21 @@ $(document).ready(function(){
 		deselectAll();
 	    $(this).addClass("menu-item-divided pure-menu-selected active");
 	    $("#homePage").show();
-	    
-	    $("#controlText").attr("hidden", "true");
-	    $("#controlText").hide();
 	 
 	    window.location.pathname = "/monitor;"
-	    //window.location.reload();
 	  });
   
   $("#controlButton").click(executeControlButton);
   
-  // select #home in menu by default
- // $("#home").click();
 });
+
+/**
+ * Redirect to fetch status page that includes control button
+ */
+function requestMonitorStatus()
+{
+	window.location.pathname = "/monitor/status";
+}
 
 /**
  * Linked to enable / disable button (i.e. #controlButton).
@@ -73,7 +72,7 @@ function executeControlButton()
     request.done(function (response, textStatus, jqXHR){
         // log a message to the console
         console.log("Hooray, it worked!");
-        $("#control").click();
+       
     });
 
     // callback handler that will be called on failure
@@ -96,69 +95,24 @@ function executeControlButton()
 	if (buttonLabel == 'Disable')
 	{
 		$(this).prop('value', 'Enable');
+		$("#controlText").text("Disabled.  Click to enable notifications and photos.");
 	}
 	else
 	{
 		$(this).prop('value', 'Disable');
+		$("#controlText").text("Enabled.  Click to disable notifications and photos.");
 	}
 }
+
 
 function loadLog()
 {
-	
-	var logLoadURL = window.location.pathname;
-	
-	if (logLoadURL.indexOf("/log") == -1)
-	{
-		window.location.pathname += "log";
-	}
-	else
-		{
-		window.location.reload(true);
-		}
-	
-	 
-	
-    // fire off the request to monitor controller
-	/*
-	
-	
-	
-    request = $.ajax({
-        url: "log",
-        type: "get",
-        data: {'level':"ALL"}
-    });
-
-    // callback handler that will be called on success
-    request.done(function (response, textStatus, jqXHR){
-        // log a message to the console
-        console.log("Hooray, it worked!");
-        logLoaded=true;
-    	var logLoadURL = window.location.pathname;
-    	
-    	if (logLoadURL.indexOf("/log") == -1)
-    	{
-    		window.location += "log";
-    	}
-    	else
-    		{
-    		window.location.reload();
-    		}
-        
-    });
-
-    // callback handler that will be called on failure
-    request.fail(function (jqXHR, textStatus, errorThrown){
-        // log the error to the console
-        console.error(
-            "The following error occured: "+
-            textStatus, errorThrown
-        );
-    });
-    */
+	window.location.pathname = "/monitor/log";	
 }
 
+/**
+ * Clear any prior selection of left side menu
+ */
 function deselectAll() {
 	 
 	$("#control").removeClass("menu-item-divided pure-menu-selected");

@@ -46,7 +46,7 @@
 
 				<ul>
 					<li id="home"><a href="/">Home</a></li>
-					<li id="control"><a href="#">Enable / Disable</a></li>
+					<li id="control"><a href="status">Enable / Disable</a></li>
 
 					<li id="schedule"><a href="#">Schedule</a>
 					</li>
@@ -118,16 +118,6 @@
 							alt="Mountain">
 					</div>
 				</div>
-			</div>
-			<div class="content">
-				<!-- hidden elements at startup, made visible based on user menu selection.  See monitor.js -->
-				
-				<p id="controlText" hidden="true">Click to enable / disable
-					email notifications and photo capture.
-					
-					<input type='button' value='Disable' id='controlButton'>
-				</p>
-				
 			</div>
 		</div>
 	</div>

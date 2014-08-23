@@ -30,12 +30,14 @@ public class MonitorServiceImpl implements MonitorService {
 	private static final Logger logger = Logger.getLogger(MonitorServiceImpl.class.getName());
 	private DBMaker databaseFactory;
 	private DB database;
-	private Map<String,String> dbMap;
+	private Map<MonitorDBKey,MonitorData> monitorDataMap;
 	
 	@PostConstruct
 	public void initIt() throws Exception {
 		  this.database = databaseFactory.closeOnJvmShutdown().make(); 
-		  this.dbMap = database.getTreeMap("monitorMao");
+		  this.monitorDataMap = database.getTreeMap("monitorDataMap");
+		  this.monitorDataMap.put(MonitorDBKey.MONITOR_DATA, new MonitorData(new DateTime()));  // initialize with an empty record
+		  this.database.commit();
 	}
 
 	@Override
@@ -43,28 +45,25 @@ public class MonitorServiceImpl implements MonitorService {
 	{
 		
 		// TODO replace dummies with service call
-		MonitorData monitorData = new MonitorData();
+		MonitorData monitorData = monitorDataMap.get(MonitorDBKey.MONITOR_DATA);
 		DateTime now = new DateTime();
-		DateTime startTime = now.minusMonths(2);
 		
 		 DateTimeFormatter fmt = DateTimeFormat.forPattern("MMMM, yyyy HH:mm:ss.SSS");  // 2014, August 20 22:08:13.123
 		 String str = fmt.print(now);
 		 
 		monitorData.setMostRecentDetectionDate(str);
 		monitorData.setNumDetection(3);
-		monitorData.setDaysUp(Days.daysBetween(startTime, now).getDays());
+		monitorData.setDaysUp(Days.daysBetween(monitorData.getStartTime(), now).getDays());
 		
-		String monitorStatus = dbMap.get(MonitorDBKey.MONITOR_STATE.name());
-		if (StringUtils.isEmpty(monitorStatus))
+		if (monitorData == null || monitorData.getStatus() == null)
 		{
 			monitorData.setStatus(MonitorStatus.UNKNOWN);
 		}
 		else
 		{
-			monitorData.setStatus(MonitorStatus.valueOf(monitorStatus));
+			monitorData.setStatus(monitorData.getStatus());
 		}
-		
-		
+			
 		return monitorData;
 	}
 	
@@ -74,17 +73,22 @@ public class MonitorServiceImpl implements MonitorService {
 		// TODO 
 		logger.log(Level.INFO, "Performing control action " + action);
 		
+		// get current monitor data
+		MonitorData monitorData = monitorDataMap.get(MonitorDBKey.MONITOR_DATA);
+		
+		// now update the status based on action requested.  
 		switch(action)
 		{
 		case ENABLE:
-			dbMap.put(MonitorDBKey.MONITOR_STATE.name(), MonitorStatus.ENABLED.name());
+			monitorData.setStatus(MonitorStatus.ENABLED);
 			break;
 		case DISABLE:
-			dbMap.put(MonitorDBKey.MONITOR_STATE.name(), MonitorStatus.DISABLED.name());
+			monitorData.setStatus(MonitorStatus.DISABLED);			
 			break;
 		default:
 			throw new Exception("Unsuppported control action: " + action.name());
 		}
+		monitorDataMap.put(MonitorDBKey.MONITOR_DATA, monitorData);
 		database.commit();
 	}
 

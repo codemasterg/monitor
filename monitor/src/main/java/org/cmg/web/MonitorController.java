@@ -41,6 +41,20 @@ public class MonitorController {
 	}
 	
 	/**
+	 * Populate monitor data bean and return home page.
+	 */
+	@RequestMapping(value="/status", method=RequestMethod.GET)
+	public String serveControlPage(Model model)
+	{
+		
+		
+		MonitorData historyData = monitorService.getMonitorData();
+		
+		model.addAttribute("monitorData", historyData);
+		return "control";
+	}
+	
+	/**
 	 * Execute requested control action (e.g enable / disable notifications)
 	 * 
 	 * @param actionString see ControlAtion enum for allowable action values
