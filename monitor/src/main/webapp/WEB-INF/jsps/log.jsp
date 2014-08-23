@@ -22,7 +22,7 @@
 
 
 <link rel="stylesheet" href="resources/css/side-menu.css">
-
+<link rel="stylesheet" href="resources/css/monitor.css">
 
 <!--[if lt IE 9]>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
@@ -80,11 +80,7 @@
 				
 				<p id="logText" >Log viewer, most recent appear first. <br>
 					
-					<textarea rows="10" cols="70">
-						<c:forEach var="rec" items="${logRecord}" varStatus="loopCounter">
-	                       ${rec}
-	                    </c:forEach>
-					</textarea>
+					<textarea class="logText"><c:forEach var="rec" items="${logRecord}" varStatus="loopCounter">${rec}</c:forEach></textarea>
 				</p>
 			</div>
 		</div>

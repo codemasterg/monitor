@@ -22,6 +22,7 @@
 
 
 <link rel="stylesheet" href="resources/css/side-menu.css">
+<link rel="stylesheet" href="resources/css/monitor.css">
 
 
 <!--[if lt IE 9]>
@@ -72,6 +73,21 @@
 			<div id="homePage" class="content" >
 				<h2 class="content-subhead">At a Glance</h2>
 				<p>
+					<c:choose>
+						<c:when test="${monitorData.status eq 'ENABLED'}">
+							<c:set var="textStyle" value="normalStatusText"></c:set>
+						</c:when>
+						<c:when test="${monitorData.status eq 'FAILED'}">
+							<c:set var="textStyle" value="warningText"></c:set>
+						</c:when>
+						<c:when test="${monitorData.status eq 'DISABLED'}">
+							<c:set var="textStyle" value="abnomrmalStatusText"></c:set>
+						</c:when>
+						<c:otherwise>
+							<c:set var="textStyle" value="unknownStatusText"></c:set>
+						</c:otherwise>
+					</c:choose>
+					<b>Monitor Status:</b><span class="${textStyle}">${monitorData.status}</span> <br>
 					<b>Days Up:</b> ${monitorData.daysUp} <br>
 					<b>Number of Intrusions in the Past Month:</b> ${monitorData.numDetection} <br>
 					<b>Most Recent Detection On:</b> ${monitorData.mostRecentDetectionDate }

@@ -27,5 +27,7 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-	<bean class="org.cmg.service.MonitorServiceImpl" />
+	<bean class="org.cmg.service.MonitorServiceImpl">
+		<property name="databaseFactory" ref="dbFactory"></property>
+	</bean>
 </beans>

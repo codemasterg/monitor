@@ -13,6 +13,7 @@ public class MonitorData implements Serializable {
 	private int daysUp;
 	private int numDetection;
 	private String mostRecentDetectionDate;
+	private MonitorStatus status;
 	
 
 	public int getDaysUp() {
@@ -32,6 +33,12 @@ public class MonitorData implements Serializable {
 	}
 	public void setMostRecentDetectionDate(String mostRecentDetectionDate) {
 		this.mostRecentDetectionDate = mostRecentDetectionDate;
+	}
+	public MonitorStatus getStatus() {
+		return status;
+	}
+	public void setStatus(MonitorStatus status) {
+		this.status = status;
 	}
 	
 	

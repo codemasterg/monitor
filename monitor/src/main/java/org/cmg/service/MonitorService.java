@@ -16,7 +16,7 @@ public interface MonitorService {
 
 	MonitorData getMonitorData();
 
-	void performMonitorControlAction(ControlAction action);
+	void performMonitorControlAction(ControlAction action) throws Exception;
 
 	List<String> getLogRecords(Level all);
 
