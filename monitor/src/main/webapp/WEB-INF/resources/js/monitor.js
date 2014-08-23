@@ -25,8 +25,6 @@ $(document).ready(function(){
 	deselectAll();
     $(this).addClass("menu-item-divided pure-menu-selected active");
     
-    
-    
   });
   
   // home section is also default on 1st page load

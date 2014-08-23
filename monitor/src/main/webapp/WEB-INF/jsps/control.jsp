@@ -28,7 +28,7 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
 <![endif]-->
 
-
+<link rel="shortcut icon" href="resources/images/rebound-small.ico" >
 </head>
 <body>
 

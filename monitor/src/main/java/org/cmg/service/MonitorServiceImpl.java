@@ -144,7 +144,7 @@ public class MonitorServiceImpl implements MonitorService {
 					int recordCount = 0;
 					while((logRecord = br.readLine()) != null && ++recordCount < MAX_LOG_RECORDS_TO_RETURN)
 					{
-						logRecordList.add(logRecord);
+						logRecordList.add(String.format("%s%n", logRecord));  // add OS neutral newline char at end
 					}
 					return logRecordList;
 				} 

@@ -15,7 +15,7 @@
 <meta name="description"
 	content="A layout example with a side menu that hides on mobile, just like the Pure website.">
 
-<title>Monitor Manager &ndash; Based on Yahoo Pure Layout Examples &ndash; Pure</title>
+<title>Monitor Manager &ndash; Layout on Yahoo Pure &ndash; Pure</title>
 
 <link rel="stylesheet"
 	href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
@@ -27,7 +27,7 @@
 <!--[if lt IE 9]>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
 <![endif]-->
-
+<link rel="shortcut icon" href="resources/images/rebound-small.ico" >
 
 </head>
 <body>
@@ -78,15 +78,19 @@
 					<input type='button' value='Disable' id='controlButton'>
 				</p>
 				
-				<p id="logText" >Log viewer, most recent appear first. <br>
+				<p id="logText" >Log viewer, most recent appear at bottom. <br>
 					
-					<textarea class="logText"><c:forEach var="rec" items="${logRecord}" varStatus="loopCounter">${rec}</c:forEach></textarea>
+					<textarea id="logTextArea" class="logText"><c:forEach var="rec" items="${logRecord}" varStatus="loopCounter">${rec}</c:forEach></textarea>
 				</p>
 			</div>
 		</div>
 	</div>
-	
 
+	<!-- make textarea above scroll bar auto scroll to bottom since newest recs at bottom -->
+	<script type="text/javascript">
+		var textarea = document.getElementById('logTextArea');
+		textarea.scrollTop = textarea.scrollHeight;
+	</script>
 
 	<script src="resources/js/jquery-2.1.1.min.js"></script>
 	
