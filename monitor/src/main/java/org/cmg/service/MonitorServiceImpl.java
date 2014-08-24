@@ -1,15 +1,15 @@
 package org.cmg.service;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 import org.cmg.data.MonitorDBKey;
 import org.cmg.data.MonitorData;
 import org.cmg.data.MonitorStatus;
+import org.cmg.sensor.Sensor;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
@@ -33,14 +34,16 @@ import org.springframework.util.StringUtils;
  * @author greg
  *
  */
-public class MonitorServiceImpl implements MonitorService {
+public class MonitorServiceImpl implements MonitorService, Observer {
 	
 	private static final Logger logger = Logger.getLogger(MonitorServiceImpl.class.getName());
 	
 	// Injected DBMaker, the others are obtained from it.
-	private DBMaker databaseFactory;
+	private DBMaker<?> databaseFactory;
 	private DB database;
 	private Map<MonitorDBKey,MonitorData> monitorDataMap;
+	
+	private Sensor pirSensor;  // Injected passive infrared sensor that is being monitored
 	
 	@Value(value="${org.cmg.data.log}")
 	private String logFilePath;
@@ -68,6 +71,15 @@ public class MonitorServiceImpl implements MonitorService {
 			  monitorData.setStartTime(new DateTime());
 		  }
 		  this.database.commit();
+		  
+		  // Check OS - only so this webapp can be run on windows platform for testing UI and other no raspi specific functions
+		  String OS = System.getProperty("os.name").toLowerCase();
+		  
+		  if (OS.contains("win") == false)
+		  {
+			  pirSensor.registerForSensorEvents(this);  // depends on native GPIO libs
+		  }
+		  
 	}
 
 	@Override
@@ -164,12 +176,29 @@ public class MonitorServiceImpl implements MonitorService {
 		
 	}
 
-	public DBMaker getDatabaseFactory() {
+	public DBMaker<?> getDatabaseFactory() {
 		return databaseFactory;
 	}
 
-	public void setDatabaseFactory(DBMaker databaseFactory) {
+	public void setDatabaseFactory(DBMaker<?> databaseFactory) {
 		this.databaseFactory = databaseFactory;
+	}
+
+	/**
+	 * Called back by injected sensor when a monitored event occurs.
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO get email addresses and send emails out to notify peeps
+		logger.log(Level.INFO, "Motion detected, sending email to ..");
+	}
+
+	public Sensor getPirSensor() {
+		return pirSensor;
+	}
+
+	public void setPirSensor(Sensor pirSensor) {
+		this.pirSensor = pirSensor;
 	}
 	
 }
