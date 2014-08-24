@@ -51,7 +51,6 @@
 					<li id="schedule"><a href="#">Schedule</a>
 					</li>
 
-					<li id="statistics"><a href="#">Statistics</a></li>
 					<li id="log"><a href="log">Log</a></li>
 				</ul>
 			</div>
@@ -87,13 +86,13 @@
 							<c:set var="textStyle" value="unknownStatusText"></c:set>
 						</c:otherwise>
 					</c:choose>
-					<b>Monitor Status:</b><span class="${textStyle}">${monitorData.status}</span> <br>
-					<b>Days Up:</b> ${monitorData.daysUp} <br>
-					<b>Number of Intrusions in the Past Month:</b> ${monitorData.numDetection} <br>
-					<b>Most Recent Detection On:</b> ${monitorData.mostRecentDetectionDate }
+					<b>Monitor Status: </b><span class="${textStyle}">${monitorData.status}</span> <br>
+					<b>Days Up: </b> ${monitorData.daysUp} <br>
+					<b>Number of Detections (lifetime): </b> ${monitorData.numDetection} <br>
+					<b>Most Recent Detection On: </b> ${monitorData.mostRecentDetectionDate }
 				</p>
 
-				<h2 class="content-subhead">Most recent photo captures</h2>
+				<h2 class="content-subhead">Most recent photo captures <i>... a future capability.</i></h2>
 				<p>.</p>
 
 				<div class="pure-g">

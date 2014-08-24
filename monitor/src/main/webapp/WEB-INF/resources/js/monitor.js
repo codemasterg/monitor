@@ -34,7 +34,7 @@ $(document).ready(function(){
 	    $(this).addClass("menu-item-divided pure-menu-selected active");
 	    $("#homePage").show();
 	 
-	    window.location.pathname = "/monitor;"
+	    window.location.pathname = "/monitor";
 	  });
   
   $("#controlButton").click(executeControlButton);

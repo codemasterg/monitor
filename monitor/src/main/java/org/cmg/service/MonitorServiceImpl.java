@@ -137,7 +137,7 @@ public class MonitorServiceImpl implements MonitorService, Observer {
 	@Override
 	public List<String> getLogRecords(Level all) {
 		
-		logger.log(Level.INFO, "Log records requested.");
+		logger.log(Level.FINE, "Log records requested.");
 		
 		String msg = "No log file path configured, please check monitor.properties file for org.cmg.data.log";
 		if (StringUtils.isEmpty(logFilePath) == false)
@@ -145,7 +145,7 @@ public class MonitorServiceImpl implements MonitorService, Observer {
 			File logFile = new File(logFilePath);
 			if (logFile.isFile())
 			{
-				logger.log(Level.INFO, "Opening log file " + logFilePath);
+				logger.log(Level.FINE, "Opening log file " + logFilePath);
 				try 
 				{
 					FileReader fr = new FileReader(logFile);
