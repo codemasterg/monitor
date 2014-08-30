@@ -48,10 +48,10 @@ public class PassiveIRSensor extends Observable implements Sensor  {
             @Override
             public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
                 // display pin state on console
-                logger.log(Level.INFO, "GPIO PIN STATE CHANGE: " + event.getPin() + " = " + event.getState());
-                
+                logger.log(Level.INFO, "GPIO PIN STATE CHANGE: " + event.getPin() + " = " + event.getState());           
+
                 setChanged();
-                notifyObservers(event);
+                notifyObservers(event);    
             }
             
         });
