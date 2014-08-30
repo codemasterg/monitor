@@ -28,6 +28,9 @@ import org.mapdb.DBMaker;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 
+import com.pi4j.io.gpio.PinState;
+import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
+
 /**
  * Implements all motion detection monitor services
  * 
@@ -190,7 +193,13 @@ public class MonitorServiceImpl implements MonitorService, Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO get email addresses and send emails out to notify peeps
-		logger.log(Level.INFO, "Motion detected, sending email to ..");
+		GpioPinDigitalStateChangeEvent event = (GpioPinDigitalStateChangeEvent)arg;
+		
+		if (event.getState() == PinState.HIGH)
+		{
+			logger.log(Level.INFO, "Motion detected, sending email to ..");
+		}
+
 	}
 
 	public Sensor getPirSensor() {
