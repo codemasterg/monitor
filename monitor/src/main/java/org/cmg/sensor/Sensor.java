@@ -10,7 +10,7 @@ import java.util.Observer;
  */
 public interface Sensor {
 
-	void addObserver(Observer observer);
+	void addNewObserver(Observer observer);
 
 	void registerForSensorEvents(Observer observer);
 	

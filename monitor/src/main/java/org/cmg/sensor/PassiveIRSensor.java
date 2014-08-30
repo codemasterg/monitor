@@ -21,23 +21,21 @@ import com.pi4j.io.gpio.event.GpioPinListenerDigital;
  * @author greg
  *
  */
-public class PassiveIRSensor implements Sensor {
+public class PassiveIRSensor extends Observable implements Sensor  {
 
 	private static final Logger logger = Logger.getLogger(PassiveIRSensor.class.getName());
-	private Observable observableSensor;
 	private Pin sensorPin;
 	
 	
 	public PassiveIRSensor(Pin sensorPin)
 	{
-		this.observableSensor = new Observable();
 		this.sensorPin = sensorPin;
 	}
 	
 	@Override
 	public void registerForSensorEvents(Observer observer)
 	{
-		this.observableSensor.addObserver(observer);
+		this.addObserver(observer);
 		
 		// create gpio controller
         final GpioController gpio = GpioFactory.getInstance();
@@ -51,7 +49,9 @@ public class PassiveIRSensor implements Sensor {
             public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
                 // display pin state on console
                 logger.log(Level.INFO, "GPIO PIN STATE CHANGE: " + event.getPin() + " = " + event.getState());
-                observableSensor.notifyAll();
+                
+                setChanged();
+                notifyObservers(event);
             }
             
         });
@@ -65,8 +65,8 @@ public class PassiveIRSensor implements Sensor {
 	 * @param observer
 	 */
 	@Override
-	public void addObserver(Observer observer)
+	public void addNewObserver(Observer observer)
 	{
-		this.observableSensor.addObserver(observer);
+		this.addObserver(observer);
 	}
 }

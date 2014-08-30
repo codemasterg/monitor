@@ -49,7 +49,7 @@ public class MonitorServiceImpl implements MonitorService, Observer {
 	private String logFilePath;
 	
 	@Value(value="${org.cmg.data.log.maxrecs}")
-	private static final int MAX_LOG_RECORDS_TO_RETURN = 500; // if prop set, its value overrides despite this being a final var!
+	private static final int MAX_LOG_RECORDS_TO_RETURN = 500; // if prop value set, its value overrides despite this being a final var!
 	
 	/**
 	 * Although the DB factory is injected and its factory method is called by the Spring Container,
