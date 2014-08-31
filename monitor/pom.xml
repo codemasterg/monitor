@@ -52,13 +52,13 @@
 	</dependency>
   
 
-	<!-- Jetty does not support JSPs out of the box, so monitor app must include jar -->
+	<!-- Jetty does not support JSPs out of the box, so monitor app must include jar 
 	<dependency>
 		<groupId>org.mortbay.jetty</groupId>
 		<artifactId>jsp-2.1</artifactId>
 		<version>6.1.14</version>
 	</dependency>
-    
+    -->
     
     <!-- PI4J libs -->
 	<dependency>
@@ -98,15 +98,22 @@
 	</dependency>
 
 	<dependency>
+		<groupId>javax.mail</groupId>
+		<artifactId>mail</artifactId>
+		<version>1.4.7</version>
+	</dependency>
+
+	<dependency>
 		<groupId>org.mapdb</groupId>
 		<artifactId>mapdb</artifactId>
 		<version>1.0.6</version>
 	</dependency>
-    <dependency>
-	<groupId>javax.annotation</groupId>
-	<artifactId>jsr250-api</artifactId>
-	<version>1.0</version>
-</dependency>
+	
+	<dependency>
+		<groupId>javax.annotation</groupId>
+		<artifactId>jsr250-api</artifactId>
+		<version>1.0</version>
+	</dependency>
     
     
   </dependencies>

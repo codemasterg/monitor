@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,16 +27,13 @@ import org.mapdb.DBMaker;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 
-import com.pi4j.io.gpio.PinState;
-import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
-
 /**
  * Implements all motion detection monitor services
  * 
  * @author greg
  *
  */
-public class MonitorServiceImpl implements MonitorService, Observer {
+public class MonitorServiceImpl implements MonitorService {
 	
 	private static final Logger logger = Logger.getLogger(MonitorServiceImpl.class.getName());
 	
@@ -45,6 +41,9 @@ public class MonitorServiceImpl implements MonitorService, Observer {
 	private DBMaker<?> databaseFactory;
 	private DB database;
 	private Map<MonitorDBKey,MonitorData> monitorDataMap;
+	
+	// Injected observers
+	private Observer emailNotifier;
 	
 	private Sensor pirSensor;  // Injected passive infrared sensor that is being monitored
 	
@@ -80,7 +79,7 @@ public class MonitorServiceImpl implements MonitorService, Observer {
 		  
 		  if (OS.contains("win") == false)
 		  {
-			  pirSensor.registerForSensorEvents(this);  // depends on native GPIO libs
+			  pirSensor.registerForSensorEvents(emailNotifier);  // depends on native GPIO libs
 		  }
 		  
 	}
@@ -187,21 +186,6 @@ public class MonitorServiceImpl implements MonitorService, Observer {
 		this.databaseFactory = databaseFactory;
 	}
 
-	/**
-	 * Called back by injected sensor when a monitored event occurs.
-	 */
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO get email addresses and send emails out to notify peeps
-		GpioPinDigitalStateChangeEvent event = (GpioPinDigitalStateChangeEvent)arg;
-		
-		if (event.getState() == PinState.HIGH)
-		{
-			logger.log(Level.INFO, "Motion detected, sending email to ..");
-		}
-
-	}
-
 	public Sensor getPirSensor() {
 		return pirSensor;
 	}
@@ -209,5 +193,13 @@ public class MonitorServiceImpl implements MonitorService, Observer {
 	public void setPirSensor(Sensor pirSensor) {
 		this.pirSensor = pirSensor;
 	}
-	
+
+	public Observer getEmailNotifier() {
+		return emailNotifier;
+	}
+
+	public void setEmailNotifier(Observer emailNotifier) {
+		this.emailNotifier = emailNotifier;
+	}
+
 }

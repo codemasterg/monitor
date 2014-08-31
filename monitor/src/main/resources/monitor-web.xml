@@ -30,5 +30,6 @@
 	<bean class="org.cmg.service.MonitorServiceImpl">
 		<property name="databaseFactory" ref="dbFactory"></property>
 		<property name="pirSensor" ref="pirSensor"></property>
+		<property name="emailNotifier" ref="emailNotifier"></property>
 	</bean>
 </beans>

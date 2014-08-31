@@ -19,7 +19,7 @@
 	<context:component-scan base-package="org.cmg" />
 	
 	<!-- MapDB beans -->
-	<context:property-placeholder location="classpath:monitor.properties" />
+	<context:property-placeholder location="file:monitor-properties" />
 	<bean id="dbFile" class="java.io.File">
 		<constructor-arg value="${org.cmg.data.filepath}"></constructor-arg>
 	</bean>
@@ -32,6 +32,14 @@
 	<!-- PIR Sensor Bean -->
 	<bean id="pirSensor" class="org.cmg.sensor.PassiveIRSensor">
 		<constructor-arg><util:constant static-field="${org.cmg.sensor.pin}"/></constructor-arg>
+	</bean>
+	
+	<!-- Email props -->
+	<!-- creates a java.util.Properties instance with values loaded from the supplied location -->
+	<util:properties id="emailProps" location="classpath:monitor.properties" />
+	
+	<bean id="emailNotifier" class="org.cmg.observer.EmailNotifier">
+		<property name="props" ref="emailProps" />
 	</bean>
 	
 </beans>
