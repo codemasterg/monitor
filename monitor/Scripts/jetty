@@ -188,7 +188,8 @@ export JAVA="$JAVA_HOME/bin/java"
 JAVA_OPTIONS="$JAVA_OPTIONS -Djava.io.tmpdir=$JETTY_TMP \
   -DSTART=$JETTY_START_CONFIG \
   -Djetty.home=$JETTY_HOME -Djetty.logs=$LOGDIR \
-  -Djetty.host=$JETTY_HOST -Djetty.port=$JETTY_PORT"
+  -Djetty.host=$JETTY_HOST -Djetty.port=$JETTY_PORT \
+  -Dmonitor.properties.path=/home/pi/monitor/monitor.properties"
 
 # Set the JSP compiler if set in the jetty.default file
 if [ -n "$JSP_COMPILER" ]; then

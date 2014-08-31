@@ -18,8 +18,8 @@
 	<mvc:annotation-driven />	
 	<context:component-scan base-package="org.cmg" />
 	
-	<!-- MapDB beans -->
-	<context:property-placeholder location="file:monitor-properties" />
+	<!-- MapDB beans.  monitor props passed in as JVM -D arg -->
+	<context:property-placeholder location="file:${monitor.properties.path}" />
 	<bean id="dbFile" class="java.io.File">
 		<constructor-arg value="${org.cmg.data.filepath}"></constructor-arg>
 	</bean>
@@ -36,7 +36,7 @@
 	
 	<!-- Email props -->
 	<!-- creates a java.util.Properties instance with values loaded from the supplied location -->
-	<util:properties id="emailProps" location="classpath:monitor.properties" />
+	<util:properties id="emailProps" location="file:${monitor.properties.path}" />
 	
 	<bean id="emailNotifier" class="org.cmg.observer.EmailNotifier">
 		<property name="props" ref="emailProps" />

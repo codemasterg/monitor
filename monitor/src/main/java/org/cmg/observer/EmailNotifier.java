@@ -37,30 +37,41 @@ public class EmailNotifier implements Observer {
 		if (event.getState() == PinState.HIGH)
 		{
 			logger.log(Level.INFO, "Motion detected, sending email to ..");
-			
-			Session session = Session.getInstance(this.props,
-			  new javax.mail.Authenticator() {
-				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication(props.getProperty("mail.sender.account"), password);
+
+
+			// set any needed mail.smtps.* properties here
+			Session session = Session.getInstance(props);
+			MimeMessage msg = new MimeMessage(session);
+
+			// set the message content here
+			Transport t = null;
+			try
+			{
+				t = session.getTransport("smtps");
+
+				t.connect(props.getProperty("mail.smtp.host"), props.getProperty("mail.sender.account"), props.getProperty("mail.sender.passwd"));
+				msg.setRecipients(Message.RecipientType.TO,
+						InternetAddress.parse(props.getProperty("mail.distro.list")));
+				msg.setSubject("Motion  Detected");
+				msg.setText("Woof!"
+						+ "\n\n Woof!  Woof!!");
+				t.sendMessage(msg, msg.getAllRecipients());
+			} 
+			catch(Exception e)
+			{
+				logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+			finally 
+			{
+				try 
+				{
+					if (t != null)
+					{
+						t.close();
+					}
+				} catch (MessagingException e) {
+					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
-			  });
-	 
-			try {
-	 
-				Message message = new MimeMessage(session);
-				message.setFrom(new InternetAddress("from-email@gmail.com"));
-				message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("to-email@gmail.com"));
-				message.setSubject("Testing Subject");
-				message.setText("Dear Mail Crawler,"
-					+ "\n\n No spam to my email, please!");
-	 
-				Transport.send(message);
-	 
-				System.out.println("Done");
-	 
-			} catch (MessagingException e) {
-				throw new RuntimeException(e);
 			}
 		}
 		
