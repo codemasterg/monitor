@@ -29,6 +29,17 @@
 		<constructor-arg ref="dbFile" />
 	</bean>
 	
+	<!-- not directly used by any application code, just makes factory add DB close function on shutdown -->
+	<bean id="shutdownHook" 
+		factory-bean="dbFactory" 
+		factory-method="closeOnJvmShutdown">
+	</bean>
+	
+	<bean id="database"
+		factory-bean="dbFactory" 
+		factory-method="make">
+	</bean>
+	
 	<!-- PIR Sensor Bean -->
 	<bean id="pirSensor" class="org.cmg.sensor.PassiveIRSensor">
 		<constructor-arg><util:constant static-field="${org.cmg.sensor.pin}"/></constructor-arg>
@@ -40,6 +51,7 @@
 	
 	<bean id="emailNotifier" class="org.cmg.observer.EmailNotifier">
 		<property name="props" ref="emailProps" />
+		<property name="database" ref="database"></property>
 	</bean>
 	
 </beans>

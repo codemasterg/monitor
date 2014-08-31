@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,10 +19,8 @@ import org.cmg.data.MonitorStatus;
 import org.cmg.sensor.Sensor;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.mapdb.BTreeMap;
 import org.mapdb.DB;
-import org.mapdb.DBMaker;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 
@@ -37,10 +34,9 @@ public class MonitorServiceImpl implements MonitorService {
 	
 	private static final Logger logger = Logger.getLogger(MonitorServiceImpl.class.getName());
 	
-	// Injected DBMaker, the others are obtained from it.
-	private DBMaker<?> databaseFactory;
+	// Injected database the map is then obtained from it.
 	private DB database;
-	private Map<MonitorDBKey,MonitorData> monitorDataMap;
+	private BTreeMap<MonitorDBKey,MonitorData> monitorDataMap;
 	
 	// Injected observers
 	private Observer emailNotifier;
@@ -54,14 +50,12 @@ public class MonitorServiceImpl implements MonitorService {
 	private static final int MAX_LOG_RECORDS_TO_RETURN = 500; // if prop value set, its value overrides despite this being a final var!
 	
 	/**
-	 * Although the DB factory is injected and its factory method is called by the Spring Container,
-	 * some additional static methods need to be called from the factory so PostConstruct is used.
+	 * Check to see if DB has existing monitor data, create default entry if not.
 	 * 
 	 * @throws Exception
 	 */
 	@PostConstruct
 	public void init() throws Exception {
-		  this.database = databaseFactory.closeOnJvmShutdown().make(); 
 		  this.monitorDataMap = database.getTreeMap("monitorDataMap");
 		  MonitorData monitorData = this.monitorDataMap.get(MonitorDBKey.MONITOR_DATA);
 		  if (monitorData == null)
@@ -72,14 +66,14 @@ public class MonitorServiceImpl implements MonitorService {
 		  {
 			  monitorData.setStartTime(new DateTime());
 		  }
-		  this.database.commit();
+		  database.commit();
 		  
 		  // Check OS - only so this webapp can be run on windows platform for testing UI and other no raspi specific functions
 		  String OS = System.getProperty("os.name").toLowerCase();
 		  
 		  if (OS.contains("win") == false)
 		  {
-			  pirSensor.registerForSensorEvents(emailNotifier);  // depends on native GPIO libs
+			  pirSensor.registerForSensorEvents(emailNotifier);  // depends on native GPIO libs, so only for raspbian
 		  }
 		  
 	}
@@ -88,15 +82,10 @@ public class MonitorServiceImpl implements MonitorService {
 	public MonitorData getMonitorData()
 	{
 		
-		// TODO replace dummies with service call
 		MonitorData monitorData = monitorDataMap.get(MonitorDBKey.MONITOR_DATA);
+			
 		DateTime now = new DateTime();
 		
-		 DateTimeFormatter fmt = DateTimeFormat.forPattern("MMMM dd, yyyy HH:mm:ss.SSS");  // August 20, 2014 22:08:13.123
-		 String str = fmt.print(now);
-		 
-		monitorData.setMostRecentDetectionDate(str);
-		monitorData.setNumDetection(3);
 		monitorData.setDaysUp(Days.daysBetween(monitorData.getStartTime(), now).getDays());
 		
 		if (monitorData == null || monitorData.getStatus() == null)
@@ -114,7 +103,6 @@ public class MonitorServiceImpl implements MonitorService {
 	@Override
 	public void performMonitorControlAction(ControlAction action) throws Exception
 	{
-		// TODO 
 		logger.log(Level.INFO, "Performing control action " + action);
 		
 		// get current monitor data
@@ -178,14 +166,6 @@ public class MonitorServiceImpl implements MonitorService {
 		
 	}
 
-	public DBMaker<?> getDatabaseFactory() {
-		return databaseFactory;
-	}
-
-	public void setDatabaseFactory(DBMaker<?> databaseFactory) {
-		this.databaseFactory = databaseFactory;
-	}
-
 	public Sensor getPirSensor() {
 		return pirSensor;
 	}
@@ -200,6 +180,10 @@ public class MonitorServiceImpl implements MonitorService {
 
 	public void setEmailNotifier(Observer emailNotifier) {
 		this.emailNotifier = emailNotifier;
+	}
+
+	public void setDatabase(DB database) {
+		this.database = database;
 	}
 
 }

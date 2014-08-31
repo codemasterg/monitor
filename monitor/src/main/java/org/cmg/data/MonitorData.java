@@ -53,5 +53,13 @@ public class MonitorData implements Serializable {
 	public void setStartTime(DateTime startTime) {
 		this.startTime = startTime;
 	}
+
+	@Override
+	public String toString() {
+		return "MonitorData [daysUp=" + daysUp + ", numDetection="
+				+ numDetection + ", mostRecentDetectionDate="
+				+ mostRecentDetectionDate + ", status=" + status
+				+ ", startTime=" + startTime + "]";
+	}
 	
 }
