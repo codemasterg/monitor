@@ -45,11 +45,21 @@ public class PassiveIRSensor extends Observable implements Sensor  {
 		this.sensorPin = sensorPin;
 	}
 	
+	/**
+	 * Initialize the DB map associated with the injected DB.
+	 * 
+	 * @throws Exception
+	 */
 	@PostConstruct
 	public void init() throws Exception {
 		  this.monitorDataMap = database.getTreeMap("monitorDataMap");
 	}
 	
+	/**
+	 * Adds Observers to this sensor and listens for events on GPIO pin the sensor is attached to.
+	 * If the sensor is not MonitorStatus.DISABLED, each Observer is notified of the pin's state change
+	 * (HIGH | LOW).
+	 */
 	@Override
 	public void registerForSensorEvents(List<Observer> observerList)
 	{
