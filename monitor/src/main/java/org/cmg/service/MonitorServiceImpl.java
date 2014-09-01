@@ -39,7 +39,7 @@ public class MonitorServiceImpl implements MonitorService {
 	private BTreeMap<MonitorDBKey,MonitorData> monitorDataMap;
 	
 	// Injected observers
-	private Observer emailNotifier;
+	private List<Observer> observerList;
 	
 	private Sensor pirSensor;  // Injected passive infrared sensor that is being monitored
 	
@@ -73,7 +73,7 @@ public class MonitorServiceImpl implements MonitorService {
 		  
 		  if (OS.contains("win") == false)
 		  {
-			  pirSensor.registerForSensorEvents(emailNotifier);  // depends on native GPIO libs, so only for raspbian
+			  pirSensor.registerForSensorEvents(this.observerList);  // depends on native GPIO libs, so only for raspbian
 		  }
 		  
 	}
@@ -174,12 +174,12 @@ public class MonitorServiceImpl implements MonitorService {
 		this.pirSensor = pirSensor;
 	}
 
-	public Observer getEmailNotifier() {
-		return emailNotifier;
+	public List<Observer> getObserverList() {
+		return observerList;
 	}
 
-	public void setEmailNotifier(Observer emailNotifier) {
-		this.emailNotifier = emailNotifier;
+	public void setObserverList(List<Observer> observerList) {
+		this.observerList = observerList;
 	}
 
 	public void setDatabase(DB database) {

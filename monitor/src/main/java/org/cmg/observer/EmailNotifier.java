@@ -18,10 +18,12 @@ import org.cmg.data.MonitorDBKey;
 import org.cmg.data.MonitorData;
 import org.cmg.data.MonitorStatus;
 import org.joda.time.DateTime;
+import org.joda.time.Seconds;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.mapdb.BTreeMap;
 import org.mapdb.DB;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
@@ -42,6 +44,9 @@ public class EmailNotifier implements Observer {
 	
 	// Injected props
 	private Properties props;
+
+	@Value(value="${org.cmg.sensor.rearm}")
+	int notificationThresholdInSeconds;
 	
 	@PostConstruct
 	public void init() throws Exception {
@@ -54,19 +59,9 @@ public class EmailNotifier implements Observer {
 		
 		if (event.getState() == PinState.HIGH)
 		{
+			// only send notification if tripped (i.e. time since most recent exceeds configurable threshold).  
 			MonitorData monitorData = monitorDataMap.get(MonitorDBKey.MONITOR_DATA);
-			int numDetection = monitorData.getNumDetection();
-			monitorData.setNumDetection(++numDetection);
-			DateTime now = new DateTime();
-
-			DateTimeFormatter fmt = DateTimeFormat.forPattern("MMMM dd, yyyy HH:mm:ss.SSS");  // August 20, 2014 22:08:13.123
-			monitorData.setMostRecentDetectionDate(fmt.print(now));
-			monitorDataMap.put(MonitorDBKey.MONITOR_DATA, monitorData);
-			database.commit();
-			logger.log(Level.INFO, "Motion detected, updated DB: " + monitorData);
-
-			// only send notification if enabled
-			if (monitorData.getStatus() == MonitorStatus.ENABLED)
+			if (monitorData.getStatus() == MonitorStatus.TRIPPED )
 			{
 				// set any needed mail.smtps.* properties here
 				Session session = Session.getInstance(props);
@@ -82,9 +77,13 @@ public class EmailNotifier implements Observer {
 					msg.setRecipients(Message.RecipientType.TO,
 							InternetAddress.parse(props.getProperty("mail.distro.list")));
 					msg.setSubject("Motion  Detected");
-					msg.setText("Woof!"
-							+ "\n\n Woof!  Woof!!");
+
+					DateTimeFormatter fmt = DateTimeFormat.forPattern("MMMM dd, yyyy HH:mm:ss");  // August 20, 2014 22:08:13
+					DateTime now = new DateTime();
+					msg.setText("Attention!"
+							+ "\n\n Montion Detected on: " + fmt.print(now));
 					t.sendMessage(msg, msg.getAllRecipients());
+					logger.log(Level.INFO, "email sent to: " +  props.getProperty("mail.distro.list"));
 				} 
 				catch(Exception e)
 				{
@@ -92,6 +91,8 @@ public class EmailNotifier implements Observer {
 				}
 				finally 
 				{
+					monitorData.setStatus(MonitorStatus.ENABLED);
+					database.commit();
 					try 
 					{
 						if (t != null)
@@ -103,11 +104,13 @@ public class EmailNotifier implements Observer {
 					}
 				}
 			}
+			else
+			{
+				logger.log(Level.WARNING, " Notification not sent.  Motion detected, but it's too soon since most recent detection.");
+			}
 		}
-		else 
-		{
-			logger.log(Level.WARNING, "Motion detected, but notifications are currently disabled.");
-		}
+		
+
 	}
 
 	public Properties getProps() {

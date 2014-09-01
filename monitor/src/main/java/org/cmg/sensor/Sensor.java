@@ -1,5 +1,6 @@
 package org.cmg.sensor;
 
+import java.util.List;
 import java.util.Observer;
 
 /**
@@ -10,9 +11,11 @@ import java.util.Observer;
  */
 public interface Sensor {
 
-	void addNewObserver(Observer observer);
-
-	void registerForSensorEvents(Observer observer);
-	
+	/**
+	 * Register the given list of observers for a sensor.  Observers are updated when sensor is not in MonitorStatus.DISABLED state.
+	 * 
+	 * @param observerList
+	 */
+	void registerForSensorEvents(List<Observer> observerList);
 
 }

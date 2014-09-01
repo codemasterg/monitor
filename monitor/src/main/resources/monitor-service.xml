@@ -43,15 +43,32 @@
 	<!-- PIR Sensor Bean -->
 	<bean id="pirSensor" class="org.cmg.sensor.PassiveIRSensor">
 		<constructor-arg><util:constant static-field="${org.cmg.sensor.pin}"/></constructor-arg>
+		<property name="database" ref="database"></property>
 	</bean>
 	
 	<!-- Email props -->
 	<!-- creates a java.util.Properties instance with values loaded from the supplied location -->
 	<util:properties id="emailProps" location="file:${monitor.properties.path}" />
 	
+	<!-- Sensor observers -->
 	<bean id="emailNotifier" class="org.cmg.observer.EmailNotifier">
 		<property name="props" ref="emailProps" />
 		<property name="database" ref="database"></property>
 	</bean>
 	
+	<bean id="monitorDataUpdater" class="org.cmg.observer.MonitorDataUpdater">
+		<property name="database" ref="database"></property>
+	</bean>
+
+	<util:list id="observerList" value-type="java.util.Observer">
+		<ref bean="emailNotifier"/>
+		<ref bean="monitorDataUpdater"/>
+	</util:list>
+	
+	<!-- The monitor service is @Injected by MonitorController -->
+	<bean id="monitorService" class="org.cmg.service.MonitorServiceImpl">
+		<property name="database" ref="database"></property>
+		<property name="pirSensor" ref="pirSensor"></property>
+		<property name="observerList" ref="observerList"></property>
+	</bean>
 </beans>

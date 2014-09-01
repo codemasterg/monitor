@@ -89,7 +89,7 @@
 					<b>Monitor Status: </b><span class="${textStyle}">${monitorData.status}</span> <br>
 					<b>Days Up: </b> ${monitorData.daysUp} <br>
 					<b>Number of Detections (lifetime): </b> ${monitorData.numDetection} <br>
-					<b>Most Recent Detection On: </b> ${monitorData.mostRecentDetectionDate }
+					<b>Most Recent Detection On: </b> ${monitorData.formattedMostRecentDetectionDate }
 				</p>
 
 				<h2 class="content-subhead">Most recent photo captures <i>... a future capability.</i></h2>

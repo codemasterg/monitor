@@ -3,6 +3,8 @@ package org.cmg.data;
 import java.io.Serializable;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class MonitorData implements Serializable {
 	/**
@@ -12,13 +14,19 @@ public class MonitorData implements Serializable {
 	
 	private int daysUp;
 	private int numDetection;
-	private String mostRecentDetectionDate;
+	private DateTime mostRecentDetectionDate;
 	private MonitorStatus status;
 	private DateTime startTime;
 	
 	public MonitorData(DateTime startTime)
 	{
 		this.startTime = startTime;
+	}
+	
+	public String getFormattedMostRecentDetectionDate()
+	{
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("MMMM dd, yyyy HH:mm:ss.SSS");  // August 20, 2014 22:08:13.123
+		return fmt.print(this.mostRecentDetectionDate);
 	}
 
 	public int getDaysUp() {
@@ -33,10 +41,10 @@ public class MonitorData implements Serializable {
 	public void setNumDetection(int numDetection) {
 		this.numDetection = numDetection;
 	}
-	public String getMostRecentDetectionDate() {
+	public DateTime getMostRecentDetectionDate() {
 		return mostRecentDetectionDate;
 	}
-	public void setMostRecentDetectionDate(String mostRecentDetectionDate) {
+	public void setMostRecentDetectionDate(DateTime mostRecentDetectionDate) {
 		this.mostRecentDetectionDate = mostRecentDetectionDate;
 	}
 	public MonitorStatus getStatus() {
