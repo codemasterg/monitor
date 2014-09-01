@@ -43,6 +43,7 @@
 	<!-- PIR Sensor Bean -->
 	<bean id="pirSensor" class="org.cmg.sensor.PassiveIRSensor">
 		<constructor-arg><util:constant static-field="${org.cmg.sensor.pin}"/></constructor-arg>
+		<property name="ledPin"><util:constant static-field="${org.cmg.led.pin}"/></property>
 		<property name="database" ref="database"></property>
 	</bean>
 	

@@ -10,7 +10,6 @@ public enum MonitorStatus {
 	UNKNOWN,
 	ENABLED,
 	DISABLED,   // admin has disabled notifications, can only be enabled by admin
-	TRIPPED,	// sensor has detected motion, set back to enabled after grace period
 	FAILED
 
 }
