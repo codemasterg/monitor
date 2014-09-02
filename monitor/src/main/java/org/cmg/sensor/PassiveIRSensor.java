@@ -16,6 +16,8 @@ import org.joda.time.Seconds;
 import org.mapdb.BTreeMap;
 import org.mapdb.DB;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
@@ -35,6 +37,7 @@ import com.pi4j.io.gpio.trigger.GpioSyncStateTrigger;
  * @author greg
  *
  */
+@EnableScheduling
 public class PassiveIRSensor extends Observable implements Sensor  {
 
 	private static final Logger logger = Logger.getLogger(PassiveIRSensor.class.getName());
@@ -49,19 +52,40 @@ public class PassiveIRSensor extends Observable implements Sensor  {
 	
 	private BTreeMap<MonitorDBKey,MonitorData> monitorDataMap;
 	
+	// GPIO members
+	private GpioController gpio;
+	private GpioPinDigitalOutput sensorLED;
+	private GpioPinDigitalInput sensor;
+	
 	public PassiveIRSensor(Pin sensorPin)
 	{
 		this.sensorPin = sensorPin;
+		// create gpio controller
+        this.gpio = GpioFactory.getInstance();
+
+        // provision gpio pin as an input pin with its internal pull down resistor enabled
+        this.sensor = gpio.provisionDigitalInputPin(this.sensorPin, PinPullResistance.PULL_DOWN);
 	}
 	
 	/**
 	 * Initialize the DB map associated with the injected DB.
 	 * 
+	 * If org.cmg.led.pin is set, the pin is chained to the state of the sensor so that when the 
+	 * sensor goes HIGH, the LED attached to org.cmg.led.pin is illuminated.
 	 * @throws Exception
 	 */
 	@PostConstruct
-	public void init() throws Exception {
-		  this.monitorDataMap = database.getTreeMap("monitorDataMap");
+	public void init() throws Exception 
+	{
+		this.monitorDataMap = database.getTreeMap("monitorDataMap");
+
+		// provision gpio LED pin so it's on when sensor is HIGH, off when sensor is LOW
+		if (this.ledPin != null)
+		{
+			this.sensorLED = gpio.provisionDigitalOutputPin(ledPin, "Sensor LED", PinState.LOW);
+			this.sensor.addTrigger(new GpioSyncStateTrigger(sensorLED));
+			logger.info("Chained " + ledPin.getName() + " to sensor associated with " + this.sensorPin.getName());
+		}
 	}
 	
 	/**
@@ -69,8 +93,6 @@ public class PassiveIRSensor extends Observable implements Sensor  {
 	 *  - If the sensor is MonitorStatus.ENABLED, each Observer is notified of the pin's state change
 	 * (HIGH | LOW).
 	 * 
-	 * - If org.cmg.led.pin is set, the pin is chained to the state of the sensor so that when the 
-	 * sensor goes HIGH, the LED attached to org.cmg.led.pin is illuminated.
 	 */
 	@Override
 	public void registerForSensorEvents(List<Observer> observerList)
@@ -80,21 +102,7 @@ public class PassiveIRSensor extends Observable implements Sensor  {
 			this.addObserver(observer);
 			logger.log(Level.INFO, "Pin " + sensorPin.getName() + " has been registered to observer: ." + observer.toString());
 		}
-		
-		// create gpio controller
-        final GpioController gpio = GpioFactory.getInstance();
-
-        // provision gpio pin as an input pin with its internal pull down resistor enabled
-        final GpioPinDigitalInput sensor = gpio.provisionDigitalInputPin(this.sensorPin, PinPullResistance.PULL_DOWN);
         
-        // provision gpio LED pin so it's on when sensor is HIGH, off when sensor is LOW
-        if (this.ledPin != null)
-        {
-        	GpioPinDigitalOutput sensorLED = gpio.provisionDigitalOutputPin(ledPin, "Sensor LED", PinState.LOW);
-        	sensor.addTrigger(new GpioSyncStateTrigger(sensorLED));
-        	logger.info("Chained " + ledPin.getName() + " to sensor associated with " + this.sensorPin.getName());
-        }
-
         // create and register gpio pin listener
         sensor.addListener(new GpioPinListenerDigital() {
             @Override
@@ -105,7 +113,6 @@ public class PassiveIRSensor extends Observable implements Sensor  {
                 MonitorData monitorData = monitorDataMap.get(MonitorDBKey.MONITOR_DATA);
     			if (monitorData.getStatus() != MonitorStatus.DISABLED )
     			{
-    				
     				DateTime now = new DateTime();
     				int secondsSinceMostRecentUpdate = Seconds.secondsBetween(monitorData.getMostRecentDetectionDate(), now).getSeconds();
     				
@@ -130,6 +137,19 @@ public class PassiveIRSensor extends Observable implements Sensor  {
             }
             
         });
+	}
+	
+	/**
+	 * Periodically check to see if sensor has been administratively disabled, if so pulse sensor LED.
+	 */
+	@Scheduled(fixedDelay=3000)
+	public void pulseLEDWhenSensorDisabled()
+	{
+		MonitorData monitorData = monitorDataMap.get(MonitorDBKey.MONITOR_DATA);
+		if (monitorData.getStatus() == MonitorStatus.DISABLED )
+		{
+	        this.sensorLED.pulse(1000, true); // set second argument to 'true' use a blocking call	        	
+		}
 	}
 
 	public DB getDatabase() {
