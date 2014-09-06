@@ -74,6 +74,7 @@ public class PhotoTaker implements Observer {
 				File photoFile = new File("img-" + fmt.print(now) + ".jpg");
 				
 				String cameraCommand = cameraCommandPrefix + photoFile;
+				logger.log(Level.INFO, "executing: " + cameraCommand);
 				
 				// Execute the command that takes a picture
 				Process p = Runtime.getRuntime().exec(cameraCommand);
