@@ -71,7 +71,7 @@ public class PhotoTaker implements Observer {
 				// use date time in file name that photo should be written to so prior photos not overwritten
 				DateTimeFormatter fmt = DateTimeFormat.forPattern("MMMM-dd-yyyy-HH:mm:ss");  // August-20-2014-22:08:13
 				DateTime now = new DateTime();
-				File photoFile = new File(photoDirectory + "/" + fmt.print(now));
+				File photoFile = new File(photoDirectory + "/" + fmt.print(now) + ".jpg");
 				
 				String cameraCommand = cameraCommandPrefix + photoFile;
 				logger.log(Level.INFO, "executing: " + cameraCommand);
