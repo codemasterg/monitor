@@ -9,10 +9,13 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import org.cmg.data.MonitorDBKey;
 import org.cmg.data.MonitorData;
@@ -36,7 +39,7 @@ public class EmailNotifier implements Observer {
 
 	private static final Logger logger = Logger.getLogger(EmailNotifier.class.getName());
 
-	// Injected database the map are obtained from it.
+	// Injected database the map is obtained from it.
 	private DB database;
 	private BTreeMap<MonitorDBKey,MonitorData> monitorDataMap;
 
@@ -71,12 +74,37 @@ public class EmailNotifier implements Observer {
 				msg.setRecipients(Message.RecipientType.TO,
 						InternetAddress.parse(props.getProperty("mail.distro.list")));
 				msg.setSubject("Motion  Detected");
+				msg.addHeader("X-Priority", "1");   // 1 = high, 3 = normal, 5 = low.  gmail marks as 'important'
 
 				DateTimeFormatter fmt = DateTimeFormat.forPattern("MMMM dd, yyyy HH:mm:ss");  // August 20, 2014 22:08:13
 				DateTime now = new DateTime();
-				msg.setText("Attention!"
+				
+				Multipart multipart = new MimeMultipart();
+
+				// creates body part for the message
+				MimeBodyPart messageBodyPart = new MimeBodyPart();
+				messageBodyPart.setContent(msg, "text/html");
+				messageBodyPart.setText("Attention!"
 						+ "\n\n Montion Detected on: " + fmt.print(now));
+
+				// if photo exists, creates body part for the attachment 
+				if (monitorData.getPhotoList().isEmpty() == false)
+				{
+					MimeBodyPart attachPart = new MimeBodyPart();
+					attachPart.attachFile(monitorData.getPhotoList().get(monitorData.getPhotoList().size() -1));  // end of list has latest photo
+					multipart.addBodyPart(attachPart);
+				}
+
+				// adds parts to the multipart
+				multipart.addBodyPart(messageBodyPart);
+				
+				// sets the multipart as message's content
+				msg.setContent(multipart);
+				
+				// sends the e-mail
+				Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );  // hate that this is needed, but needed when using java mail with MIME types
 				t.sendMessage(msg, msg.getAllRecipients());
+				
 				logger.log(Level.INFO, "email sent to: " +  props.getProperty("mail.distro.list"));
 			} 
 			catch(Exception e)

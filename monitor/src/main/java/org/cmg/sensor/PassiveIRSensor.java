@@ -114,7 +114,12 @@ public class PassiveIRSensor extends Observable implements Sensor  {
     			if (monitorData.getStatus() != MonitorStatus.DISABLED )
     			{
     				DateTime now = new DateTime();
-    				int secondsSinceMostRecentUpdate = Seconds.secondsBetween(monitorData.getMostRecentDetectionDate(), now).getSeconds();
+    				
+    				int secondsSinceMostRecentUpdate = Integer.MAX_VALUE;
+    				if (monitorData.getMostRecentDetectionDate() != null)  // should be null only after DB reset or new install
+    				{
+    					 secondsSinceMostRecentUpdate = Seconds.secondsBetween(monitorData.getMostRecentDetectionDate(), now).getSeconds();
+    				}
     				
     				// only notify observers if time since most recent updates exceeds configurable threshold.
     				// this is done to avoid constant updates resulting from repeated movement detected by the sensor within the threshold.

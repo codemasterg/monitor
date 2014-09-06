@@ -58,7 +58,7 @@
 		<artifactId>jsp-2.1</artifactId>
 		<version>6.1.14</version>
 	</dependency>
-   
+    
     <!-- PI4J libs -->
 	<dependency>
 		<groupId>com.pi4j</groupId>

@@ -1,6 +1,9 @@
 package org.cmg.data;
 
+import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -17,10 +20,12 @@ public class MonitorData implements Serializable {
 	private DateTime mostRecentDetectionDate;
 	private MonitorStatus status;
 	private DateTime startTime;
+	private List<File> photoList;
 	
 	public MonitorData(DateTime startTime)
 	{
 		this.startTime = startTime;
+		this.photoList = new ArrayList<File>();
 	}
 	
 	public String getFormattedMostRecentDetectionDate()
@@ -62,12 +67,21 @@ public class MonitorData implements Serializable {
 		this.startTime = startTime;
 	}
 
+	public List<File> getPhotoList() {
+		return photoList;
+	}
+
+	public void setPhotoList(List<File> photoList) {
+		this.photoList = photoList;
+	}
+
 	@Override
 	public String toString() {
 		return "MonitorData [daysUp=" + daysUp + ", numDetection="
 				+ numDetection + ", mostRecentDetectionDate="
 				+ mostRecentDetectionDate + ", status=" + status
-				+ ", startTime=" + startTime + "]";
+				+ ", startTime=" + startTime + ", photoList=" + photoList + "]";
 	}
+
 	
 }

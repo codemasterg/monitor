@@ -62,6 +62,7 @@
 	</bean>
 	
 	<bean id="photoTaker" class="org.cmg.observer.PhotoTaker">
+		<property name="database" ref="database"></property>
 	</bean>
 
 	<util:list id="observerList" value-type="java.util.Observer">
