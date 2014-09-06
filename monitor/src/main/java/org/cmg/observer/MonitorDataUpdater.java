@@ -18,7 +18,8 @@ import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 
 
 /**
- * This class is responsible for sending emails to a distribution list defined by property org.cmg.notify.email
+ * This class implements updates and persists monitor data (motion detection count, date/time).
+ * 
  * @author greg
  *
  */

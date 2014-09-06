@@ -125,9 +125,12 @@ public class PassiveIRSensor extends Observable implements Sensor  {
     				}
     				else
     				{
-    					monitorData.setMostRecentDetectionDate(now);
-    					database.commit();
-    					logger.log(Level.WARNING, "Motion detected, but it's too soon since most recent detection.");
+    					if (event.getState() == PinState.HIGH)
+    					{
+    						monitorData.setMostRecentDetectionDate(now);
+    						database.commit();
+    						logger.log(Level.WARNING, "Motion detected, but it's too soon since most recent detection.");
+    					}
     				}
     			}
     			else

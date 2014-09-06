@@ -49,21 +49,25 @@
 	
 	<!-- Email props -->
 	<!-- creates a java.util.Properties instance with values loaded from the supplied location -->
-	<util:properties id="emailProps" location="file:${monitor.properties.path}" />
+	<util:properties id="systemProps" location="file:${monitor.properties.path}" />
 	
 	<!-- Sensor observers -->
 	<bean id="emailNotifier" class="org.cmg.observer.EmailNotifier">
-		<property name="props" ref="emailProps" />
+		<property name="props" ref="systemProps" />
 		<property name="database" ref="database"></property>
 	</bean>
 	
 	<bean id="monitorDataUpdater" class="org.cmg.observer.MonitorDataUpdater">
 		<property name="database" ref="database"></property>
 	</bean>
+	
+	<bean id="photoTaker" class="org.cmg.observer.PhotoTaker">
+	</bean>
 
 	<util:list id="observerList" value-type="java.util.Observer">
 		<ref bean="emailNotifier"/>
 		<ref bean="monitorDataUpdater"/>
+		<ref bean="photoTaker"/>
 	</util:list>
 	
 	<!-- The monitor service is @Injected by MonitorController -->
