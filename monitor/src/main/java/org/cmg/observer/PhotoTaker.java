@@ -55,7 +55,7 @@ public class PhotoTaker implements Observer {
 		{
 			photoDirectory.mkdir();
 		}
-		this.cameraCommandPrefix = cameraExec + " " + photoDirectory + "/";
+		this.cameraCommandPrefix = cameraExec + " ";
 		
 		this.monitorDataMap = database.getTreeMap("monitorDataMap");
 	}
@@ -71,7 +71,7 @@ public class PhotoTaker implements Observer {
 				// use date time in file name that photo should be written to so prior photos not overwritten
 				DateTimeFormatter fmt = DateTimeFormat.forPattern("MMMM-dd-yyyy-HH:mm:ss");  // August-20-2014-22:08:13
 				DateTime now = new DateTime();
-				File photoFile = new File("img-" + fmt.print(now) + ".jpg");
+				File photoFile = new File(photoDirectory + "/" + fmt.print(now));
 				
 				String cameraCommand = cameraCommandPrefix + photoFile;
 				logger.log(Level.INFO, "executing: " + cameraCommand);
@@ -84,7 +84,7 @@ public class PhotoTaker implements Observer {
 				if (photoFile.isFile())
 				{
 					MonitorData monitorData = this.monitorDataMap.get(MonitorDBKey.MONITOR_DATA);
-					monitorData.getPhotoList().add(new File(this.photoDirectory + "/img-" + fmt.print(now)));
+					monitorData.getPhotoList().add(photoFile);
 					database.commit();
 				}
 

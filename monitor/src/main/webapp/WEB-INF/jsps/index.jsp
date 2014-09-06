@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
 <!doctype html>
@@ -61,15 +61,16 @@
 				<c:if test="">
 				</c:if>
 				<div>
-					<span class="header" style="font-size: 25pt">Watch Dog</span>
-					<img style="height: 70px; width: 60px; vertical-align: middle" alt="Downdee" src="resources/images/rebound.jpg">
+					<span class="header" style="font-size: 25pt">Watch Dog</span> <img
+						style="height: 70px; width: 60px; vertical-align: middle"
+						alt="Downdee" src="resources/images/rebound.jpg">
 				</div>
-					
-				
+
+
 				<h2>Motion Detection Manager</h2>
 			</div>
 
-			<div id="homePage" class="content" >
+			<div id="homePage" class="content">
 				<h2 class="content-subhead">At a Glance</h2>
 				<p>
 					<c:choose>
@@ -86,44 +87,38 @@
 							<c:set var="textStyle" value="unknownStatusText"></c:set>
 						</c:otherwise>
 					</c:choose>
-					<b>Monitor Status: </b><span class="${textStyle}">${monitorData.status}</span> <br>
-					<b>Days Up: </b> ${monitorData.daysUp} <br>
-					<b>Number of Detections (lifetime): </b> ${monitorData.numDetection} <br>
-					<b>Most Recent Detection On: </b> ${monitorData.formattedMostRecentDetectionDate }
+					<b>Monitor Status: </b><span class="${textStyle}">${monitorData.status}</span>
+					<br> <b>Days Up: </b> ${monitorData.daysUp} <br> <b>Number
+						of Detections (lifetime): </b> ${monitorData.numDetection} <br> <b>Most
+						Recent Detection On: </b>
+					${monitorData.formattedMostRecentDetectionDate }
 				</p>
 
-				<h2 class="content-subhead">Most recent photo captures <i>... a future capability.</i></h2>
+				<h2 class="content-subhead">Most recent photo captures</h2>
 				<p>.</p>
 
+				<!-- show most recent four photos captured.  Note that Jetty allows access to resources outside WAR in <JETTY HOME>/webapps/files -->
 				<div class="pure-g">
-					<div class="pure-u-1-4">
-						<img class="pure-img-responsive"
-							src="https://lh4.googleusercontent.com/DCTDK2hXslKlEPfXgE4Aqs8NL_qia5OVUWomqhzYBA0=w305-h228-p-no"
-							alt="Peyto Lake">
-					</div>
-					<div class="pure-u-1-4">
-						<img class="pure-img-responsive"
-							src="https://lh3.googleusercontent.com/Rqvb6xY-GIVtkv9vlMkcCWqaldLjbdDYmN-YVqnyDbc=w305-h228-p-no"
-							alt="Train">
-					</div>
-					<div class="pure-u-1-4">
-						<img class="pure-img-responsive"
-							src="https://lh5.googleusercontent.com/cJYrigMahU5LwBsCkTIJTvgOD4jE-s7yrySnjC6kC1g=w276-h207-p-no"
-							alt="T-Shirt Store">
-					</div>
-					<div class="pure-u-1-4">
-						<img class="pure-img-responsive"
-							src="https://lh5.googleusercontent.com/NhIGuE5VzXnkqvach_F93Zgytk_6jBUTpeIvUkys4-0=w306-h228-p-no"
-							alt="Mountain">
-					</div>
+					<c:set var="listLength" value="${fn:length(monitorData.photoList)}" />
+					<c:forEach items="${monitorData.photoList}" varStatus="status">
+						<c:if test="${status.index < 4}">
+							<div class="pure-u-1-4">
+								<img class="pure-img-responsive"
+									src="/files/${monitorData.photoList[listLength - status.count].name}"
+									alt="No photo available"/>
+									<div>
+										${monitorData.photoList[listLength - status.count].name}
+									</div>
+							</div>
+						</c:if>
+					</c:forEach>
 				</div>
 			</div>
 		</div>
-	</div>
-	
 
 
-	<script src="resources/js/jquery-2.1.1.min.js"></script>
+
+		<script src="resources/js/jquery-2.1.1.min.js"></script>
 	
 	<script src="resources/js/monitor.js"></script>
 
