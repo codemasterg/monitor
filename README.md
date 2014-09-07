@@ -2,7 +2,7 @@ The 'monitor' project is a motion detection web application written in Java ..
 =======
 
 ... when the Java web application detects motion it captures a photo then sends an email / text to a configurable 
-distribution list.  Runs on Raspberry Pi, tested with Linux version:
+distribution list.  Runs in the Jetty web server on Raspberry Pi, tested with Linux version:
   raspberrypi 3.12.22+ #691 PREEMPT Wed Jun 18 18:29:58 BST 2014 armv6l GNU/Linux
 
 Dependencies (managed by Maven):
@@ -12,6 +12,7 @@ Dependencies (managed by Maven):
 - Java Mail API so emails / texts can be sent when motion detected
 - raspistill for photo capture
 - MapDB for NoSQL data persistence
+- 
 
 The program utilizes an external property file so that email server, accounts, and  distribution are configurable.  It also allows the photo capture command and image file directory to be configured.  The time threshold for rearming the motion sensor after a motion detection is also configurable.
 
