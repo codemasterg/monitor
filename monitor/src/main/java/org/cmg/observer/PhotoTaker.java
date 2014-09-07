@@ -34,7 +34,7 @@ public class PhotoTaker implements Observer {
 
 	private static final Logger logger = Logger.getLogger(PhotoTaker.class.getName());
 
-	// Injected database the map is obtained from it.
+	// Injected database.  The map is obtained from it.
 	private DB database;
 	private BTreeMap<MonitorDBKey,MonitorData> monitorDataMap;
 	
@@ -47,6 +47,11 @@ public class PhotoTaker implements Observer {
 	private File photoDirectory;
 	private String cameraCommandPrefix;
 
+	/**
+	 * Create photo file directory if it does not exist and initialize the DB map.
+	 * 
+	 * @throws Exception
+	 */
 	@PostConstruct
 	public void init() throws Exception {
 		// make photo dir if it does not already exist
@@ -60,6 +65,12 @@ public class PhotoTaker implements Observer {
 		this.monitorDataMap = database.getTreeMap("monitorDataMap");
 	}
 
+	/**
+	 * Spawns a process defined by the property org.cmg.camera.cmd and writes the image file captured to the directory
+	 * defined by the property org.cmg.camera.output.dir.  The oldest image file is deleted when a new one is captured
+	 * and four have already been captured.  This acts like a sliding-window to ensure the filesystem does not
+	 * fill with old image files.
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		GpioPinDigitalStateChangeEvent event = (GpioPinDigitalStateChangeEvent)arg;
@@ -85,6 +96,13 @@ public class PhotoTaker implements Observer {
 				{
 					MonitorData monitorData = this.monitorDataMap.get(MonitorDBKey.MONITOR_DATA);
 					monitorData.getPhotoList().add(photoFile);
+					
+					if (monitorData.getPhotoList().size() > 4)
+					{
+						monitorData.getPhotoList().get(0).delete();  // remove oldest image file
+						File deletedFile = monitorData.getPhotoList().remove(0);
+						logger.log(Level.INFO, "Deleted photo file " + deletedFile.toString());
+					}
 					database.commit();
 				}
 
@@ -97,6 +115,12 @@ public class PhotoTaker implements Observer {
 		}
 	}
 
+	/** 
+	 * Capture output of the completed process and log it.
+	 * 
+	 * @param p
+	 * @throws IOException
+	 */
 	private void logCommandOutput(Process p) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 

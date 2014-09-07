@@ -19,7 +19,6 @@ import javax.mail.internet.MimeMultipart;
 
 import org.cmg.data.MonitorDBKey;
 import org.cmg.data.MonitorData;
-import org.cmg.data.MonitorStatus;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -51,6 +50,12 @@ public class EmailNotifier implements Observer {
 		this.monitorDataMap = database.getTreeMap("monitorDataMap");
 	}
 
+	/**
+	 * Construct an email message indicating motion has been detected and send to email server and distribution as defined by 
+	 * the mail.smtp.* properties of this application's property file (monitor.properties).  The most recent photo taken before  
+	 * this update is called, see ({@link org.cmg.observer.PhotoTaker} is attached to the email message.
+	 * 
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		GpioPinDigitalStateChangeEvent event = (GpioPinDigitalStateChangeEvent)arg;
@@ -113,8 +118,6 @@ public class EmailNotifier implements Observer {
 			}
 			finally 
 			{
-				monitorData.setStatus(MonitorStatus.ENABLED);
-				database.commit();
 				try 
 				{
 					if (t != null)

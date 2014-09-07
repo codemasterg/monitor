@@ -36,6 +36,9 @@ public class MonitorDataUpdater implements Observer {
 		this.monitorDataMap = database.getTreeMap("monitorDataMap");
 	}
 
+	/**
+	 * Perform DB updates (detection event count and detection timestamp).
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		GpioPinDigitalStateChangeEvent event = (GpioPinDigitalStateChangeEvent)arg;
