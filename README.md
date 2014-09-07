@@ -27,7 +27,7 @@ view the system log and enable / disable sending of email and capture of photos.
 user gets a visual inidcation of it being disabled.  LED also illuminates (solid) when motion detected.
 
 The PIR sensor is built on the PI4J library (kudos to that project, it made the GPIO interface so easy to integrate).
-The sensor is an Observable (ref Observer Design Pattern); observables are:
+The sensor is an Observable (ref Observer Design Pattern); observers are:
    - Photo Taker
    - Databse Updater
    - EMail Sender
