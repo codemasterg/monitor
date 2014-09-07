@@ -2,7 +2,7 @@ The 'monitor' project is a motion detection web application written in Java ..
 =======
 
 ... when the Java web application detects motion it captures a photo then sends an email / text to a configurable 
-distribution list.  Runs in the Jetty web server on Raspberry Pi, tested with Linux version:
+distribution list.  It runs in the Jetty web server on Raspberry Pi, tested with Linux version:
   raspberrypi 3.12.22+ #691 PREEMPT Wed Jun 18 18:29:58 BST 2014 armv6l GNU/Linux
 
 Dependencies (managed by Maven):
