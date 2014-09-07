@@ -12,7 +12,6 @@ Dependencies (managed by Maven):
 - Java Mail API so emails / texts can be sent when motion detected
 - raspistill for photo capture
 - MapDB for NoSQL data persistence
-- 
 
 The program utilizes an external property file so that email server, accounts, and  distribution are configurable.  It also allows the photo capture command and image file directory to be configured.  The time threshold for rearming the motion sensor after a motion detection is also configurable.
 
