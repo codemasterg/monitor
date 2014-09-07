@@ -13,9 +13,7 @@ Dependencies (managed by Maven):
 - raspistill for photo capture
 - MapDB for NoSQL data persistence
 
-Utilizes external property file so that email server, accounts, and  distribution are configurable.  Also allows 
-photo capture command and image file directory to be configured.  The time threshold for rearming the motion 
-sensor after a motion detection is also configurable.
+The program utilizes an external property file so that email server, accounts, and  distribution are configurable.  It also allows the photo capture command and image file directory to be configured.  The time threshold for rearming the motion sensor after a motion detection is also configurable.
 
 This project was created as a learning exercise to increase my understanding of Spring, Spring MVC, and JQuery.  It's also useful home security device!
 
