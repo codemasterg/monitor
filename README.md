@@ -37,6 +37,6 @@ This separation of concerns helped keep things clean and loosely coupled (a good
 Planned enhancements:
 
 - Operational Schedule: allows user to specify when sensor should be auto disabled / enabled.  This is 
-  useful when you know you will be in the area being monitored on a regular basis.
+  useful when you know you will be in the area being monitored on a regular schedule.
   
 - Add USB triggered Nerf toy that activates when motion detected.
