@@ -13,7 +13,7 @@ Dependencies (managed by Maven):
 - raspistill for photo capture
 - MapDB for NoSQL data persistence
 
-Utilizes external dependency file so that email server, accounts, and  distribution are configurable.  ALso allows 
+Utilizes external dependency file so that email server, accounts, and  distribution are configurable.  Also allows 
 photo capture command and image file directory to be configured.  The time threshold for rearming the motion 
 sensor after a motion detection is also configurable.
 
@@ -24,7 +24,7 @@ The design is basic MVC:
 
 Browser --> Controller --> Service.  The web app lets you view various stats, see the most recent photo captures,
 view the system log and enable / disable sending of email and capture of photos.  When disabled pulses an LED so 
-user gets a visual inidcation of it being disabled.  LED also illuminates (solid) when motion detected).
+user gets a visual inidcation of it being disabled.  LED also illuminates (solid) when motion detected.
 
 The PIR sensor is built on the PI4J library (kudos to that project, it made the GPIO interface so easy to integrate).
 The sensor is an Observable (ref Observer Design Pattern); observables are:
