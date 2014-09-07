@@ -63,7 +63,7 @@ public class PassiveIRSensor extends Observable implements Sensor  {
 		// create gpio controller
         this.gpio = GpioFactory.getInstance();
 
-        // provision gpio pin as an input pin with its internal pull down resistor enabled
+        // provision gpio sensor pin as an input pin with its internal pull down resistor enabled
         this.sensor = gpio.provisionDigitalInputPin(this.sensorPin, PinPullResistance.PULL_DOWN);
 	}
 	
@@ -79,7 +79,8 @@ public class PassiveIRSensor extends Observable implements Sensor  {
 	{
 		this.monitorDataMap = database.getTreeMap("monitorDataMap");
 
-		// provision gpio LED pin so it's on when sensor is HIGH, off when sensor is LOW
+		// provision gpio LED pin so it's on when sensor is HIGH, off when sensor is LOW.
+		// NOTE: the LED is set high / low only AFTER the sensor call back completes.
 		if (this.ledPin != null)
 		{
 			this.sensorLED = gpio.provisionDigitalOutputPin(ledPin, "Sensor LED", PinState.LOW);
@@ -103,7 +104,7 @@ public class PassiveIRSensor extends Observable implements Sensor  {
 			logger.log(Level.INFO, "Pin " + sensorPin.getName() + " has been registered to observer: ." + observer.toString());
 		}
         
-        // create and register gpio pin listener
+        // create and register gpio pin listener call back
         sensor.addListener(new GpioPinListenerDigital() {
             @Override
             public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
@@ -125,6 +126,10 @@ public class PassiveIRSensor extends Observable implements Sensor  {
     				// this is done to avoid constant updates resulting from repeated movement detected by the sensor within the threshold.
     				if (secondsSinceMostRecentUpdate > notificationThresholdInSeconds)
     				{
+    					// Set second argument to 'true' to use a blocking call.  Don't block here since observer functions are time critical
+    					// the LED is pulsed to provide light for the camera.  Even though an LED is chained to the state of sensor (see init method above)
+    					// it's only pulsed AFTER all observers complete which is too late for the camera observer.
+    					sensorLED.pulse(1500, false);  // pulse LED in background so light is provided for camera Observer
     					setChanged();
     					notifyObservers(event);
     				}

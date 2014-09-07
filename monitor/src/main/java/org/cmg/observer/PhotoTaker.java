@@ -91,7 +91,7 @@ public class PhotoTaker implements Observer {
 				Process p = Runtime.getRuntime().exec(cameraCommand);
 				p.waitFor();
 				
-				// if photo file written update DB with photo file path
+				// if photo file written to filesystem update DB with photo file path
 				if (photoFile.isFile())
 				{
 					MonitorData monitorData = this.monitorDataMap.get(MonitorDBKey.MONITOR_DATA);
