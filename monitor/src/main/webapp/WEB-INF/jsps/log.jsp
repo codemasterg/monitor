@@ -45,12 +45,9 @@
 
 				<ul>
 					<li id="home"><a href="#">Home</a></li>
-					<li id="control"><a href="/">Enable / Disable</a></li>
-
-					<li id="schedule"><a href="#">Schedule</a>
-					</li>
-
-					<li id="statistics"><a href="#">Statistics</a></li>
+					<li id="control"><a href="status">Enable / Disable</a></li>
+					<li id="reset"><a href="reset">Reset</a></li>
+					<li id="schedule"><a href="#">Schedule</a></li>
 					<li id="log"><a href="log">Log</a></li>
 				</ul>
 			</div>

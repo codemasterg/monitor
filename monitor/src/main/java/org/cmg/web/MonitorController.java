@@ -32,8 +32,6 @@ public class MonitorController {
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String serveHomePage(Model model)
 	{
-		
-		
 		MonitorData historyData = monitorService.getMonitorData();
 		
 		model.addAttribute("monitorData", historyData);
@@ -46,12 +44,22 @@ public class MonitorController {
 	@RequestMapping(value="/status", method=RequestMethod.GET)
 	public String serveControlPage(Model model)
 	{
-		
-		
 		MonitorData historyData = monitorService.getMonitorData();
 		
 		model.addAttribute("monitorData", historyData);
 		return "control";
+	}
+	
+	/**
+	 * Populate monitor data bean and return reset page.
+	 */
+	@RequestMapping(value="/reset", method=RequestMethod.GET)
+	public String serveResetPage(Model model)
+	{
+		MonitorData historyData = monitorService.getMonitorData();
+		
+		model.addAttribute("monitorData", historyData);
+		return "reset";
 	}
 	
 	/**
@@ -70,6 +78,19 @@ public class MonitorController {
 			monitorService.performMonitorControlAction(action);
 		}
 		
+		return "index";
+	}
+	
+	/**
+	 * Execute requested stats reset
+	 * 
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value="/doReset", method=RequestMethod.POST)
+	public String performReset() throws Exception
+	{
+		monitorService.performReset();
 		return "index";
 	}
 

@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import org.cmg.data.MonitorDBKey;
 import org.cmg.data.MonitorData;
 import org.cmg.data.MonitorStatus;
+import org.cmg.service.MonitorServiceImpl;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 import org.mapdb.BTreeMap;
@@ -60,11 +61,15 @@ public class PassiveIRSensor extends Observable implements Sensor  {
 	public PassiveIRSensor(Pin sensorPin)
 	{
 		this.sensorPin = sensorPin;
+		
 		// create gpio controller
-        this.gpio = GpioFactory.getInstance();
+		if (MonitorServiceImpl.isWinOS() == false)
+		{
+			this.gpio = GpioFactory.getInstance();
 
-        // provision gpio sensor pin as an input pin with its internal pull down resistor enabled
-        this.sensor = gpio.provisionDigitalInputPin(this.sensorPin, PinPullResistance.PULL_DOWN);
+			// provision gpio sensor pin as an input pin with its internal pull down resistor enabled
+			this.sensor = gpio.provisionDigitalInputPin(this.sensorPin, PinPullResistance.PULL_DOWN);
+		}
 	}
 	
 	/**
@@ -81,7 +86,7 @@ public class PassiveIRSensor extends Observable implements Sensor  {
 
 		// provision gpio LED pin so it's on when sensor is HIGH, off when sensor is LOW.
 		// NOTE: the LED is set high / low only AFTER the sensor call back completes.
-		if (this.ledPin != null)
+		if (this.ledPin != null && 	MonitorServiceImpl.isWinOS() == false)  // PIR interface only supported on raspbian
 		{
 			this.sensorLED = gpio.provisionDigitalOutputPin(ledPin, "Sensor LED", PinState.LOW);
 			this.sensor.addTrigger(new GpioSyncStateTrigger(sensorLED));

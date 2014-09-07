@@ -62,28 +62,12 @@
 					<img style="height: 70px; width: 60px; vertical-align: middle" alt="Downdee" src="resources/images/rebound.jpg">
 				</div>
 					
-				
 				<h2>Motion Detection Manager</h2>
 			</div>
 
 			<div class="content">
-				<c:choose>
-					<c:when test="${monitorData.status eq 'ENABLED'}">
-						<c:set var="buttonLabel" value="Disable"></c:set>
-						<c:set var="msg" value="Click to disable email notifications and photo capture."></c:set>
-					</c:when>
-					<c:when test="${monitorData.status eq 'DISABLED'}">
-						<c:set var="buttonLabel" value="Enable"></c:set>
-						<c:set var="msg" value="Email notifications and photo capture are currently disabled, click to enable."></c:set>
-					</c:when>
-					<c:otherwise>
-						<c:set var="buttonLabel" value="Enable"></c:set>
-						<c:set var="msg" value="The monitor had a failure or its state cannot be determined, click to enable."></c:set>
-					</c:otherwise>
-				</c:choose>
-				<p id="controlText">${msg}</p>
-				<input type='button' value="${buttonLabel}" id='controlButton'>
-				
+				<p id="resetText">Do you want to reset all statistics and remove all photos?</p>
+				<input type='button' value="Reset" id='resetButton'>
 			</div>
 		</div>
 	</div>

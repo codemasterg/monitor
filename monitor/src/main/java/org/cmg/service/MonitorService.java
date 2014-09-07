@@ -19,5 +19,7 @@ public interface MonitorService {
 	void performMonitorControlAction(ControlAction action) throws Exception;
 
 	List<String> getLogRecords(Level all);
+	
+	void performReset();
 
 }

@@ -68,10 +68,7 @@ public class MonitorServiceImpl implements MonitorService {
 		  }
 		  database.commit();
 		  
-		  // Check OS - only so this webapp can be run on windows platform for testing UI and other no raspi specific functions
-		  String OS = System.getProperty("os.name").toLowerCase();
-		  
-		  if (OS.contains("win") == false)
+		  if (isWinOS() == false)  // PIR interface only supported on raspbian
 		  {
 			  pirSensor.registerForSensorEvents(this.observerList);  // depends on native GPIO libs, so only for raspbian
 		  }
@@ -165,6 +162,40 @@ public class MonitorServiceImpl implements MonitorService {
 		return Collections.nCopies(1, msg); 
 		
 	}
+	
+
+	@Override
+	public void performReset() {
+		// get current monitor data
+		MonitorData monitorData = monitorDataMap.get(MonitorDBKey.MONITOR_DATA);
+		
+		monitorData.setMostRecentDetectionDate(null);
+		monitorData.setNumDetection(0);
+		
+		// loop thru photo file list and remove files
+		for(File photoFile : monitorData.getPhotoList())
+		{
+			photoFile.delete();
+			logger.log(Level.INFO, "Deleted file: " + photoFile);
+		}
+		
+		monitorData.getPhotoList().clear();  /// remove file path list
+		
+		database.commit();
+	}
+	
+	/**
+	 * 
+	 * @return true if running on a Windows OS, false otherwise.
+	 */
+	static public boolean isWinOS()
+	{
+		// Check OS - this is done so this webapp can be run on windows platform for testing UI and other non raspi specific functions
+		  String OS = System.getProperty("os.name").toLowerCase();
+		  
+		  return OS.contains("win");
+		  
+	}
 
 	public Sensor getPirSensor() {
 		return pirSensor;
@@ -185,5 +216,4 @@ public class MonitorServiceImpl implements MonitorService {
 	public void setDatabase(DB database) {
 		this.database = database;
 	}
-
 }

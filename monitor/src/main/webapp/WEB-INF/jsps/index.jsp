@@ -47,10 +47,7 @@
 				<ul>
 					<li id="home"><a href="/">Home</a></li>
 					<li id="control"><a href="status">Enable / Disable</a></li>
-
-					<li id="schedule"><a href="#">Schedule</a>
-					</li>
-
+					<li id="reset"><a href="reset">Reset</a></li>
 					<li id="log"><a href="log">Log</a></li>
 				</ul>
 			</div>
@@ -88,10 +85,10 @@
 						</c:otherwise>
 					</c:choose>
 					<b>Monitor Status: </b><span class="${textStyle}">${monitorData.status}</span>
-					<br> <b>Days Up: </b> ${monitorData.daysUp} <br> <b>Number
-						of Detections (lifetime): </b> ${monitorData.numDetection} <br> <b>Most
-						Recent Detection On: </b>
-					${monitorData.formattedMostRecentDetectionDate }
+					<br> 
+					<b>Days Up: </b> ${monitorData.daysUp} <br>
+					 <b>Number of Detections (lifetime): </b> ${monitorData.numDetection} <br> 
+					 <b>Most Recent Detection On: </b> ${monitorData.formattedMostRecentDetectionDate }
 				</p>
 
 				<h2 class="content-subhead">Most recent photo captures</h2>

@@ -14,8 +14,6 @@ $(document).ready(function(){
     $(this).addClass("menu-item-divided pure-menu-selected active");
     
     requestMonitorStatus();
-   
-  
   });
   
   // user requested log viewer
@@ -38,6 +36,8 @@ $(document).ready(function(){
 	  });
   
   $("#controlButton").click(executeControlButton);
+  
+  $("#resetButton").click(executeResetButton);
   
 });
 
@@ -101,6 +101,52 @@ function executeControlButton()
 		$("#controlText").text("Enabled.  Click to disable notifications and photos.");
 	}
 }
+
+
+/**
+ * Linked to stats reset button (i.e. #resetButton).
+ */
+function executeResetButton()
+{
+	// verify user wants to reset
+
+	if (confirm('Are you sure?  This cannot be undone.')) {
+
+		// disable button for duration of ajax call
+		$(this).prop('disabled', true);
+		
+		// fire off the request to monitor controller
+		request = $.ajax({
+			url: "doReset",
+			type: "post"
+		});
+
+		// callback handler that will be called on success
+		request.done(function (response, textStatus, jqXHR){
+			// log a message to the console
+			console.log("Reset worked!");
+			$("#resetText").text("Reset complete.");
+		});
+
+		// callback handler that will be called on failure
+		request.fail(function (jqXHR, textStatus, errorThrown){
+			// log the error to the console
+			console.error(
+					"The following error occured: "+
+					textStatus, errorThrown
+			);
+			$("#resetText").text("Reset failed, check browser console and server log.");
+		});
+
+		// callback handler that will be called regardless
+		// if the request failed or succeeded
+		request.always(function () {
+			// reenable the reset button
+			$("#resetButton").prop('disabled', false);
+		});
+	}
+}
+
 
 
 function loadLog()

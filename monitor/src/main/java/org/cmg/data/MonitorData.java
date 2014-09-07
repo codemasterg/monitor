@@ -30,8 +30,15 @@ public class MonitorData implements Serializable {
 	
 	public String getFormattedMostRecentDetectionDate()
 	{
-		DateTimeFormatter fmt = DateTimeFormat.forPattern("MMMM dd, yyyy HH:mm:ss.SSS");  // August 20, 2014 22:08:13.123
-		return fmt.print(this.mostRecentDetectionDate);
+		if (this.mostRecentDetectionDate != null)
+		{
+			DateTimeFormatter fmt = DateTimeFormat.forPattern("MMMM dd, yyyy HH:mm:ss.SSS");  // August 20, 2014 22:08:13.123
+			return fmt.print(this.mostRecentDetectionDate);
+		}
+		else
+		{
+			return "";
+		}
 	}
 
 	public int getDaysUp() {
