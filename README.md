@@ -1,4 +1,4 @@
-monitor is a motion detection application written in Java.
+The 'monitor' project is a motion detection web application written in Java.
 =======
 
 Complete Java web application.  When it detects motion it captures a photo then sends an email / text to a configurable 
