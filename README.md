@@ -23,7 +23,7 @@ Browser --> Controller --> Service.  The web app lets you view various stats, se
 view the system log and enable / disable sending of email and capture of photos.  When disabled pulses an LED so 
 user gets a visual inidcation of it being disabled.  LED also illuminates (solid) when motion detected.
 
-The PIR sensor is built on the PI4J library (kudos to that project, it made the GPIO interface easy to integrate).
+The PIR sensor interface is built on the PI4J library (kudos to that project, it made the GPIO interface easy to integrate).
 The sensor is an Observable (ref Observer Design Pattern); observers are:
    - Photo Taker
    - Databse Updater
