@@ -87,7 +87,7 @@
 					<b>Monitor Status: </b><span class="${textStyle}">${monitorData.status}</span>
 					<br> 
 					<b>Days Up: </b> ${monitorData.daysUp} <br>
-					 <b>Number of Detections (lifetime): </b> ${monitorData.numDetection} <br> 
+					 <b>Number of Detections (since reset): </b> ${monitorData.numDetection} <br> 
 					 <b>Most Recent Detection On: </b> ${monitorData.formattedMostRecentDetectionDate }
 				</p>
 
