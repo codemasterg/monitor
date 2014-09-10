@@ -2,7 +2,7 @@ The 'monitor' project is a motion detection web application written in Java ..
 =======
 
 ... when the Java web application detects motion it captures a photo then sends an email / text to a configurable 
-distribution list.  Runs on Raspberry Pi, tested with Linux version:
+distribution list.  It runs in the Jetty web server on Raspberry Pi, tested with Linux version:
   raspberrypi 3.12.22+ #691 PREEMPT Wed Jun 18 18:29:58 BST 2014 armv6l GNU/Linux
 
 Dependencies (managed by Maven):
@@ -23,7 +23,7 @@ Browser --> Controller --> Service.  The web app lets you view various stats, se
 view the system log and enable / disable sending of email and capture of photos.  When disabled pulses an LED so 
 user gets a visual inidcation of it being disabled.  LED also illuminates (solid) when motion detected.
 
-The PIR sensor is built on the PI4J library (kudos to that project, it made the GPIO interface easy to integrate).
+The PIR sensor interface is built on the PI4J library (kudos to that project, it made the GPIO interface easy to integrate).
 The sensor is an Observable (ref Observer Design Pattern); observers are:
    - Photo Taker
    - Databse Updater
