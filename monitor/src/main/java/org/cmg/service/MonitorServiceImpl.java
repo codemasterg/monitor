@@ -181,6 +181,8 @@ public class MonitorServiceImpl implements MonitorService {
 		
 		monitorData.getPhotoList().clear();  /// remove file path list
 		
+		// persist reset values
+		monitorDataMap.put(MonitorDBKey.MONITOR_DATA, monitorData);
 		database.commit();
 	}
 	

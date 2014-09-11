@@ -64,8 +64,12 @@
 	<bean id="photoTaker" class="org.cmg.observer.PhotoTaker">
 		<property name="database" ref="database"></property>
 	</bean>
+		
+	<bean id="audioPlayer" class="org.cmg.observer.AudioPlayer">
+	</bean>
 
 	<util:list id="observerList" value-type="java.util.Observer">
+		<ref bean="audioPlayer"/>
 		<ref bean="emailNotifier"/>
 		<ref bean="monitorDataUpdater"/>
 		<ref bean="photoTaker"/>
