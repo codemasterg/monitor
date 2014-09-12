@@ -21,13 +21,14 @@ This project was created as a learning exercise to increase my understanding of 
 The design is basic MVC:
 
 Browser --> Controller --> Service.  The web app lets you view various stats, see the most recent photo captures,
-view the system log and enable / disable sending of email and capture of photos.  When disabled it pulses an LED so 
+view the system log and enable / disable sending of email, and capture of photos.  When disabled it pulses an LED so 
 the user gets a visual inidcation that the sensor is disabled.  the LED also illuminates (solid) when motion detected.
 
 The PIR sensor interface is built using the PI4J library (kudos to that project, it made the GPIO interface easy to integrate).  The sensor is an Observable (ref Observer Design Pattern); observers are:
    - Photo Taker
    - Databse Updater
    - EMail Sender
+   - Audio Player
 
 This separation of concerns helps keep things clean and loosely coupled (a good thing).
 
