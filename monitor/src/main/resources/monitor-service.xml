@@ -67,9 +67,15 @@
 		
 	<bean id="audioPlayer" class="org.cmg.observer.AudioPlayer">
 	</bean>
+	
+	<bean id="relayActivator" class="org.cmg.observer.RelayActivator">
+		<property name="relayPin"><util:constant static-field="${org.cmg.relay.pin}"/></property>
+	</bean>
 
+	<!-- NOTE that order is important, observers are updated in reverse order listed. -->
 	<util:list id="observerList" value-type="java.util.Observer">
 		<ref bean="audioPlayer"/>
+		<ref bean="relayActivator"/>  <!-- relay closed to power up speakers before audio is played -->
 		<ref bean="emailNotifier"/>
 		<ref bean="monitorDataUpdater"/>
 		<ref bean="photoTaker"/>
