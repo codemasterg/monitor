@@ -93,6 +93,20 @@ public class MonitorController {
 		monitorService.performReset();
 		return "index";
 	}
+	
+
+	/**
+	 * Execute alarm silencer
+	 * 
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value="/doSilence", method=RequestMethod.POST)
+	public String performSilence() throws Exception
+	{
+		monitorService.performSilence();
+		return "index";
+	}
 
 	/**
 	 * 

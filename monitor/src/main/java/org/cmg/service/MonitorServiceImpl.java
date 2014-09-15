@@ -49,6 +49,11 @@ public class MonitorServiceImpl implements MonitorService {
 	@Value(value="${org.cmg.data.log.maxrecs}")
 	private static final int MAX_LOG_RECORDS_TO_RETURN = 500; // if prop value set, its value overrides despite this being a final var!
 	
+
+	// Injected audo command used to play the alarm. Used by performSilence() to stop the alarm.
+	@Value(value="${org.cmg.audio.cmd}")
+	private String audioExec;
+	
 	/**
 	 * Check to see if DB has existing monitor data, create default entry if not.
 	 * 
@@ -184,6 +189,19 @@ public class MonitorServiceImpl implements MonitorService {
 		// persist reset values
 		monitorDataMap.put(MonitorDBKey.MONITOR_DATA, monitorData);
 		database.commit();
+	}
+	
+
+	@Override
+	public void performSilence() {
+		logger.log(Level.INFO, "Silencing alarm.");
+		
+		// Execute the command silences audio
+		try {
+			Process p = Runtime.getRuntime().exec("/usr/bin/pkill -f" + audioExec);
+		} catch (IOException e) {
+			logger.log(Level.WARNING, e.getMessage(), e);
+		}
 	}
 	
 	/**

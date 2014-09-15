@@ -21,5 +21,6 @@ public interface MonitorService {
 	List<String> getLogRecords(Level all);
 	
 	void performReset();
+	void performSilence();
 
 }

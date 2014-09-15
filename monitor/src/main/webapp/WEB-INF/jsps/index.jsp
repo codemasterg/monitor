@@ -67,8 +67,16 @@
 				<h2>Motion Detection Manager</h2>
 			</div>
 
+			<br>
 			<div id="homePage" class="content">
-				<h2 class="content-subhead">At a Glance</h2>
+				<div class="pure-g">
+					<div class="pure-u-1-2">
+							<label class="headerLabel">At a Glance</label>
+					</div>
+					<div class="pure-u-1-2">
+						<input type='button' value="Silence Alarm" id='silenceButton' title="Turn off alarm">
+					</div>
+				</div>
 				<p>
 					<c:choose>
 						<c:when test="${monitorData.status eq 'ENABLED'}">

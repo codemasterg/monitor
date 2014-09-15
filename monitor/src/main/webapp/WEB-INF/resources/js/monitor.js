@@ -39,6 +39,8 @@ $(document).ready(function(){
   
   $("#resetButton").click(executeResetButton);
   
+  $("#silenceButton").click(executeSilenceButton);
+  
 });
 
 /**
@@ -147,7 +149,42 @@ function executeResetButton()
 	}
 }
 
+/**
+ * Linked to alarm silence button (i.e. #silenceButton).
+ */
+function executeSilenceButton()
+{	
+	// disable button for duration of ajax call
+	$(this).prop('disabled', true);
+	
+	// fire off the request to monitor controller
+	request = $.ajax({
+		url: "doSilence",
+		type: "post"
+	});
 
+	// callback handler that will be called on success
+	request.done(function (response, textStatus, jqXHR){
+		// log a message to the console
+		console.log("Alarm Silenced!");
+	});
+
+	// callback handler that will be called on failure
+	request.fail(function (jqXHR, textStatus, errorThrown){
+		// log the error to the console
+		console.error(
+				"The following error occured: "+
+				textStatus, errorThrown
+		);
+	});
+
+	// callback handler that will be called regardless
+	// if the request failed or succeeded
+	request.always(function () {
+		// reenable the silence button
+		$("#silenceButton").prop('disabled', false);
+	});
+}
 
 function loadLog()
 {

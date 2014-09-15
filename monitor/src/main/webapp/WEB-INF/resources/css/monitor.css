@@ -33,3 +33,13 @@
 .image .div { font-size: 40%;
                   font-family: Verdana, Arial, sans-serif;
                   text-align: center; }
+                  
+#silenceButton  {
+    width: 11.5em;  height: 1.5em;
+    color: maroon;
+}
+
+.headerLabel {
+	font-size: x-large;
+	text-decoration: important;
+}
