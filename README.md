@@ -29,6 +29,7 @@ The PIR sensor interface is built using the PI4J library (kudos to that project,
    - Databse Updater
    - EMail Sender
    - Audio Player
+   - Relay Activator (used to power up speakers only during motion; energy saving feature)
 
 This separation of concerns helps keep things clean and loosely coupled (a good thing).
 
