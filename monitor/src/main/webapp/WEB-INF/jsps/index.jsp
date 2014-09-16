@@ -74,7 +74,9 @@
 							<label class="headerLabel">At a Glance</label>
 					</div>
 					<div class="pure-u-1-2">
-						<input type='button' value="Silence Alarm" id='silenceButton' title="Turn off alarm">
+						<img alt="silence alarm" src="resources/images/mute-2-icon.png" title="Alarm will re-arm after configurable period." 
+							id="silenceButton" style="height: 50px; width: 50px" >
+						<label>Silence Alarm</label>
 					</div>
 				</div>
 				<p>

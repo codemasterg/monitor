@@ -40,6 +40,7 @@ $(document).ready(function(){
   $("#resetButton").click(executeResetButton);
   
   $("#silenceButton").click(executeSilenceButton);
+  $("#silenceButton").css('cursor', 'pointer');
   
 });
 
@@ -153,7 +154,7 @@ function executeResetButton()
  * Linked to alarm silence button (i.e. #silenceButton).
  */
 function executeSilenceButton()
-{	
+{		
 	// disable button for duration of ajax call
 	$(this).prop('disabled', true);
 	
