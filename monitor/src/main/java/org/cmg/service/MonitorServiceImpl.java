@@ -198,7 +198,7 @@ public class MonitorServiceImpl implements MonitorService {
 		
 		// Execute the command silences audio
 		try {
-			Process p = Runtime.getRuntime().exec("/usr/bin/pkill -f" + audioExec);
+			Process p = Runtime.getRuntime().exec("/usr/bin/pkill " + "xargs");
 		} catch (IOException e) {
 			logger.log(Level.WARNING, e.getMessage(), e);
 		}
