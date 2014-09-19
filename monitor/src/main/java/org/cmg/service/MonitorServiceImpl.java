@@ -102,6 +102,9 @@ public class MonitorServiceImpl implements MonitorService {
 		return monitorData;
 	}
 	
+	/**
+	 * Enable / Disable monitor functions.
+	 */
 	@Override
 	public void performMonitorControlAction(ControlAction action) throws Exception
 	{
@@ -126,6 +129,9 @@ public class MonitorServiceImpl implements MonitorService {
 		database.commit();
 	}
 
+	/**
+	 * Return up to MAX_LOG_RECORDS_TO_RETURN records in the system log.
+	 */
 	@Override
 	public List<String> getLogRecords(Level all) {
 		
@@ -163,12 +169,12 @@ public class MonitorServiceImpl implements MonitorService {
 				msg = "Cannot access log file: " + logFilePath;
 			}
 		}
-		
 		return Collections.nCopies(1, msg); 
-		
 	}
-	
 
+	/**
+	 * Reset monitor stats and remove existing photo files.
+	 */
 	@Override
 	public void performReset() {
 		// get current monitor data
@@ -190,8 +196,10 @@ public class MonitorServiceImpl implements MonitorService {
 		monitorDataMap.put(MonitorDBKey.MONITOR_DATA, monitorData);
 		database.commit();
 	}
-	
 
+	/**
+	 * Silence the alarm.
+	 */
 	@Override
 	public void performSilence() {
 		logger.log(Level.INFO, "Silencing alarm.");
