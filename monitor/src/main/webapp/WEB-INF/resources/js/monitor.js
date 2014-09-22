@@ -157,6 +157,7 @@ function executeSilenceButton()
 {		
 	// disable button for duration of ajax call
 	$(this).prop('disabled', true);
+	$(this).css("opacity", "0.3");
 	
 	// fire off the request to monitor controller
 	request = $.ajax({
@@ -184,6 +185,7 @@ function executeSilenceButton()
 	request.always(function () {
 		// reenable the silence button
 		$("#silenceButton").prop('disabled', false);
+		$("#silenceButton").css("opacity", "1.0");
 	});
 }
 
