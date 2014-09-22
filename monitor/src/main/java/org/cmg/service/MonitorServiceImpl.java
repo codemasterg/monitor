@@ -2,8 +2,10 @@ package org.cmg.service;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -156,6 +158,11 @@ public class MonitorServiceImpl implements MonitorService {
 					{
 						logRecordList.add(String.format("%s%n", logRecord));  // add OS neutral newline char at end
 					}
+					
+					if (recordCount >= MAX_LOG_RECORDS_TO_RETURN)
+					{
+						this.purgeLog(logFile);
+					}
 					return logRecordList;
 				} 
 				catch (IOException e)
@@ -170,6 +177,24 @@ public class MonitorServiceImpl implements MonitorService {
 			}
 		}
 		return Collections.nCopies(1, msg); 
+	}
+
+	/**
+	 * empty given log file
+	 * 
+	 * @param logFile
+	 */
+	private void purgeLog(File logFile) {
+		PrintWriter pw = null;
+		try {
+			pw = new PrintWriter(logFile);  // truncates log
+		} catch (FileNotFoundException e) {
+			logger.log(Level.WARNING, e.getMessage(), e);
+		}
+		if (pw != null)
+		{
+			pw.close();
+		}
 	}
 
 	/**
