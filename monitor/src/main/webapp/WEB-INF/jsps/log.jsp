@@ -83,6 +83,13 @@
 		</div>
 	</div>
 
+	<hr style="margin-top: 10%"/>
+	<footer>
+		<div class="footerLabel">
+			<label>&copy; Greg Totsline 2014</label>
+		</div>
+	</footer>
+
 	<!-- make textarea above scroll bar auto scroll to bottom since newest recs at bottom -->
 	<script type="text/javascript">
 		var textarea = document.getElementById('logTextArea');

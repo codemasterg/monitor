@@ -86,8 +86,13 @@
 			</div>
 		</div>
 	</div>
-	
 
+	<hr style="margin-top: 10%"/>
+	<footer>
+		<div class="footerLabel">
+			<label>&copy; Greg Totsline 2014</label>
+		</div>
+	</footer>
 
 	<script src="resources/js/jquery-2.1.1.min.js"></script>
 	

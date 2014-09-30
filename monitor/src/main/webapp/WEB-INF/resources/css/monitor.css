@@ -43,3 +43,9 @@
 	font-size: x-large;
 	text-decoration: underline;
 }
+
+.footerLabel {
+	text-align: right; 
+	margin-right: 5%;
+	font-size: small;
+}

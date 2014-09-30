@@ -52,13 +52,13 @@
 	</dependency>
   
 
-	<!-- Jetty does not support JSPs out of the box, so monitor app must include jar  -->
+	<!-- Jetty does not support JSPs out of the box, so monitor app must include jar  
 	<dependency>
 		<groupId>org.mortbay.jetty</groupId>
 		<artifactId>jsp-2.1</artifactId>
 		<version>6.1.14</version>
 	</dependency>
-   
+   -->
     <!-- PI4J libs -->
 	<dependency>
 		<groupId>com.pi4j</groupId>

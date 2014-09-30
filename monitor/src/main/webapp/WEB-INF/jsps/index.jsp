@@ -55,14 +55,11 @@
 
 		<div id="main">
 			<div class="header">
-				<c:if test="">
-				</c:if>
 				<div>
 					<span class="header" style="font-size: 25pt">Watch Dog</span> <img
 						style="height: 70px; width: 60px; vertical-align: middle"
 						alt="Downdee" src="resources/images/rebound.jpg">
 				</div>
-
 
 				<h2>Motion Detection Manager</h2>
 			</div>
@@ -122,7 +119,12 @@
 				</div>
 			</div>
 		</div>
-
+		<hr style="margin-top: 10%"/>
+		<footer>
+			<div class="footerLabel">
+				<label>&copy; Greg Totsline 2014</label>
+			</div>
+		</footer>
 
 
 		<script src="resources/js/jquery-2.1.1.min.js"></script>
