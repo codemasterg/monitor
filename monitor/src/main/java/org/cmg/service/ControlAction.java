@@ -2,7 +2,8 @@ package org.cmg.service;
 
 public enum ControlAction {
 	ENABLE("Enable"),
-	DISABLE("Disable");
+	DISABLE("Disable"),
+	PANIC("Panic");
 	
 	private String action;
 	

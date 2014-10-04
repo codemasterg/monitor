@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 import org.cmg.data.MonitorDBKey;
 import org.cmg.data.MonitorData;
 import org.cmg.data.MonitorStatus;
+import org.cmg.observer.AudioPlayer;
 import org.cmg.sensor.Sensor;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -123,6 +124,17 @@ public class MonitorServiceImpl implements MonitorService {
 			break;
 		case DISABLE:
 			monitorData.setStatus(MonitorStatus.DISABLED);			
+			break;
+		case PANIC:
+			for(Observer observer : observerList)
+			{
+				if (observer instanceof AudioPlayer)
+				{
+					AudioPlayer ap = (AudioPlayer) observer;
+					ap.playAudio();
+					break;
+				}
+			}
 			break;
 		default:
 			throw new Exception("Unsuppported control action: " + action.name());

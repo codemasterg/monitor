@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link rel="stylesheet" href="resources/css/monitor.css">
-	<hr style="margin-top: 10%"/>
+	<hr style="margin-top: 5%"/>
 	<footer>
 		<div>
 			<c:set var="now" value="<%=new java.util.Date()%>" />

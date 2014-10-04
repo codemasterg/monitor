@@ -42,6 +42,10 @@ $(document).ready(function(){
   $("#silenceButton").click(executeSilenceButton);
   $("#silenceButton").css('cursor', 'pointer');
   
+  $("#panicButton").mouseover(showPanicButton);
+  $("#panicButton").mouseleave(showProductIcon);
+  $("#panicButton").click(executePanicButton);
+  
 });
 
 /**
@@ -192,6 +196,59 @@ function executeSilenceButton()
 function loadLog()
 {
 	window.location.pathname = "/monitor/log";	
+}
+
+function showPanicButton()
+{
+	$("#panicButton").attr("src", "resources/images/panic.jpg");
+}
+
+function showProductIcon()
+{
+	$("#panicButton").attr("src", "resources/images/rebound.jpg");
+}
+
+
+/**
+ * Linked to panic button (i.e. #panicButton).
+ */
+function executePanicButton()
+{
+    // disable button for duration of ajax call
+    $(this).prop('disabled', true);
+    $(this).css("opacity", "0.3");
+	
+    // fire off the request to monitor controller
+    request = $.ajax({
+        url: "action",
+        type: "post",
+        data: {'action':"Panic"}
+    });
+
+    // callback handler that will be called on success
+    request.done(function (response, textStatus, jqXHR){
+        // log a message to the console
+        console.log("Panic alarm activated.");
+       
+    });
+
+    // callback handler that will be called on failure
+    request.fail(function (jqXHR, textStatus, errorThrown){
+        // log the error to the console
+        console.error(
+            "The following error occured: "+
+            textStatus, errorThrown
+        );
+    });
+    
+    // callback handler that will be called regardless
+    // if the request failed or succeeded
+    request.always(function () {
+        // reenable the control button
+    	$("#panicButton").prop('disabled', false);
+    	$("#panicButton").css("opacity", "1.0");
+    });
+	
 }
 
 /**

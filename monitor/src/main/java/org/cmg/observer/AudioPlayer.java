@@ -1,6 +1,7 @@
 package org.cmg.observer;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -61,17 +62,26 @@ public class AudioPlayer implements Observer {
 
 		if (event.getState() == PinState.HIGH)
 		{
-			try 
-			{
-				logger.log(Level.INFO, "executing: " + this.audioCommand);
-				
-				// Execute the command that plays an audio file.  It's intended to run in the background so don't block.
-				Process p = Runtime.getRuntime().exec(this.audioCommand);
-			}
-			catch (Exception e)
-			{
-				logger.log(Level.WARNING, e.getMessage(), e);
-			}
+			logger.log(Level.INFO, "executing: " + this.audioCommand);
+			
+			// Execute the command that plays an audio file.  It's intended to run in the background so don't block.
+			this.playAudio();
 		}
 	}
+	
+	/**
+	 * Execute command to play audio
+	 */
+	public void playAudio()
+	{
+		// Execute the command that plays an audio file.  It's intended to run in the background so don't block.
+		try {
+			Process p = Runtime.getRuntime().exec(this.audioCommand);
+		}
+		catch (Exception e)
+		{
+			logger.log(Level.WARNING, e.getMessage(), e);
+		}
+	}
+	
 }
