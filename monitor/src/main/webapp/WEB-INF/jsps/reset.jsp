@@ -32,7 +32,6 @@
 </head>
 <body>
 
-
 	<div id="layout">
 		<!-- Menu toggle -->
 		<a href="#menu" id="menuLink" class="menu-link"> <!-- Hamburger icon -->
@@ -53,30 +52,15 @@
 		</div>
 
 		<div id="main">
-			<div class="header">
-				<c:if test="">
-				</c:if>
-				<div>
-					<span class="header" style="font-size: 25pt">Watch Dog</span>
-					<img style="height: 70px; width: 60px; vertical-align: middle" alt="Downdee" src="resources/images/rebound.jpg">
-				</div>
-					
-				<h2>Motion Detection Manager</h2>
-			</div>
+			<%@ include file="header.jsp" %>
 
 			<div class="content">
 				<p id="resetText">Do you want to reset all statistics and remove all photos?</p>
 				<input type='button' value="Reset" id='resetButton'>
 			</div>
 		</div>
+		<%@ include file="footer.jsp" %>
 	</div>
-	
-	<hr style="margin-top: 10%; "/>
-	<footer>
-		<div class="footerLabel">
-			<label>&copy; Greg Totsline 2014</label>
-		</div>
-	</footer>
 
 	<script src="resources/js/jquery-2.1.1.min.js"></script>
 	<script src="resources/js/monitor.js"></script>

@@ -5,8 +5,6 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-
-
 <!doctype html>
 
 <head>
@@ -54,17 +52,7 @@
 		</div>
 
 		<div id="main">
-			<div class="header">
-				<c:if test="">
-				</c:if>
-				<div>
-					<span class="header" style="font-size: 25pt">Watch Dog</span>
-					<img style="height: 70px; width: 60px; vertical-align: middle" alt="Downdee" src="resources/images/rebound.jpg">
-				</div>
-					
-				
-				<h2>Motion Detection Manager</h2>
-			</div>
+				<%@ include file="header.jsp" %>
 
 						<div class="content">
 				<!-- hidden elements at startup, made visible based on user menu selection.  See monitor.js -->
@@ -81,14 +69,8 @@
 				</p>
 			</div>
 		</div>
+		<%@ include file="footer.jsp" %>
 	</div>
-
-	<hr style="margin-top: 10%"/>
-	<footer>
-		<div class="footerLabel">
-			<label>&copy; Greg Totsline 2014</label>
-		</div>
-	</footer>
 
 	<!-- make textarea above scroll bar auto scroll to bottom since newest recs at bottom -->
 	<script type="text/javascript">

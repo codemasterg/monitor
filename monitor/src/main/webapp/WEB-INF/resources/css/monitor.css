@@ -45,7 +45,13 @@
 }
 
 .footerLabel {
-	text-align: right; 
+	float: right; 
 	margin-right: 5%;
+	font-size: small;
+}
+
+.footerDate {
+	text-align: left; 
+	margin-left: 5%;
 	font-size: small;
 }
