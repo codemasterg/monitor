@@ -75,10 +75,10 @@
 	<!-- NOTE that order is important, observers are updated in reverse order listed. -->
 	<util:list id="observerList" value-type="java.util.Observer">
 		<ref bean="audioPlayer"/>
-		<ref bean="relayActivator"/>  <!-- relay closed to power up speakers before audio is played -->
 		<ref bean="emailNotifier"/>
 		<ref bean="monitorDataUpdater"/>
 		<ref bean="photoTaker"/>
+		<ref bean="relayActivator"/>  <!-- relay closed to power up light before attempting a photo -->
 	</util:list>
 	
 	<!-- The monitor service is @Injected by MonitorController -->

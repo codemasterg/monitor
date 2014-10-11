@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="resources/css/monitor.css">
 	<hr style="margin-top: 5%"/>
 	<footer>
-		<div>
+		<div style="margin-bottom: 5%">
 			<c:set var="now" value="<%=new java.util.Date()%>" />
 			<label class="footerDate">Page Updated On <fmt:formatDate type="both" value="${now}" /></label>
 			<label class="footerLabel">&copy; Greg Totsline 2014</label>
