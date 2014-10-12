@@ -29,16 +29,15 @@ public class RelayActivator extends Thread implements Observer {
 	private static final Logger logger = Logger.getLogger(RelayActivator.class.getName());
 	
 	// Injected
-	private Pin relayPin;	// illuminated when sensor goes high
+	private Pin relayPin;	// set high when sensor goes high so that a normally open relay is closed
 	
 	@Value(value="${org.cmg.relay.duration}")
 	private String  closesureDurationString;
 	private int closureDurationInMS;  // derived from injected duration string, in milliseconds
 	
-	private static boolean relayClosed;
-	
 	// GPIO members
 	private GpioController gpio;
+	private GpioPinDigitalOutput relay; 
 
 	/**
 	 * 
@@ -54,6 +53,7 @@ public class RelayActivator extends Thread implements Observer {
 		if (MonitorServiceImpl.isWinOS() == false)
 		{
 			this.gpio = GpioFactory.getInstance();
+			relay = gpio.provisionDigitalOutputPin(relayPin, "Relay Pin", PinState.LOW);
 		}
 	}
 
@@ -65,12 +65,13 @@ public class RelayActivator extends Thread implements Observer {
 		GpioPinDigitalStateChangeEvent event = (GpioPinDigitalStateChangeEvent)arg;
 
 		// if relay already closed, do nothing on HIGH pin state
-		if (event.getState() == PinState.HIGH && relayClosed == false)
+		if (event.getState() == PinState.HIGH)
 		{
 			try 
 			{				
 				// Close the relay for the configured duration.  A thread is used so the Observable is not blocked when notifying other observers
-				this.start();	
+				Activator relay = new Activator();
+				relay.start();
 			}
 			catch (Exception e)
 			{
@@ -80,32 +81,37 @@ public class RelayActivator extends Thread implements Observer {
 	}
 	
 	/**
-	 * Close a relay for configurable duration.
+	 * Control pin state associated with a relay. 
+	 * 
+	 * @author greg
+	 *
 	 */
-	@Override
-	public void run()
+	private class Activator extends Thread
 	{
-		relayClosed = true;
-		logger.log(Level.INFO, "Closing relay connected to " + this.relayPin.getName() + " for " + this.closesureDurationString + " seconds.");
-		
-		// set pin state so that the relay closes
-		GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(relayPin, "Relay Pin", PinState.HIGH);
-		
-		// sleep until it's time to re-open the relay
-		try {
-			Thread.sleep(this.closureDurationInMS);
-		} 
-		catch (InterruptedException e) {
-			logger.log(Level.WARNING, e.getMessage(), e);
-		}
-		finally
+		/**
+		 * Close a relay for configurable duration.
+		 */
+		@Override
+		public void run()
 		{
-			pin.toggle();	// close relay
+			logger.log(Level.INFO, "Closing relay connected to " + relay.getName() + " for " + closesureDurationString + " seconds.");
 			
-			// reset relay state
-			relayClosed = false;
-			logger.log(Level.INFO, "Opening relay connected to " + this.relayPin.getName());
-		}
+			// set pin state so that the relay closes
+			relay.high();
+			
+			// sleep until it's time to re-open the relay
+			try {
+				Thread.sleep(closureDurationInMS);
+			} 
+			catch (InterruptedException e) {
+				logger.log(Level.WARNING, e.getMessage(), e);
+			}
+			finally
+			{
+				relay.low();	// open relay
+				logger.log(Level.INFO, "Opening relay connected to " + relay.getName());
+			}
+		}	
 	}
 
 	public void setRelayPin(Pin relayPin) {

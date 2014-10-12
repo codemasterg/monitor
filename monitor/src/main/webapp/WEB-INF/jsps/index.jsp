@@ -99,7 +99,7 @@
 					<c:forEach items="${monitorData.photoList}" varStatus="status">
 						<c:if test="${status.index < 4}">
 							<div class="pure-u-1-4">
-								<img class="pure-img-responsive"
+								<img class="pure-img-responsive" id="photo${status.count}" title="click to enlarge, click again to reduce"
 									src="/files/${monitorData.photoList[listLength - status.count].name}"
 									alt="No photo available"/>
 									<div>

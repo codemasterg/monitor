@@ -25,6 +25,13 @@ $(document).ready(function(){
     
   });
   
+  // setup handlers to enlarge photo on click event
+  var numPhotos = $('.pure-img-responsive').length;  // get number of photos on page
+  for (var photoId = 1; photoId < numPhotos + 1; photoId++)
+  {
+	  togglePhoto(photoId)
+  }
+  
   // home section is also default on 1st page load
   $("#home").click(function(event){
 		event.preventDefault();
@@ -261,4 +268,59 @@ function deselectAll() {
 	$("#statistics").removeClass("menu-item-divided pure-menu-selected");
 	$("#log").removeClass("menu-item-divided pure-menu-selected");
 	$("#home").removeClass("menu-item-divided pure-menu-selected");
+}
+
+// toggle photo expansion
+function togglePhoto(photoId)
+{
+	$("#photo" + photoId).click(function(event){
+		 
+		$(this).css('width', function(_ , cur){
+			if (cur === '200px')
+			{
+				return '1024px';
+			}
+			else
+			{
+				return '200px';
+			}
+		});
+	});
+	  
+	$("#photo" + photoId).click(function(event){
+		  $(this).css('height', function(_ , cur){
+			  if (cur === '150px')
+			  {
+				  $(this).removeClass("pure-img-responsive");
+				  return '768px';
+			  }
+			  else
+			  {
+				  $(this).addClass("pure-img-responsive");
+				  return '150px';
+			  }
+			  
+		  });
+		  reducePhotos(photoId);	// it's possible another photo is already enlarged, return others to normal size so only 1 clicked image is expanded.
+	});
+	
+	$("#photo" + photoId).css('cursor', 'pointer');  // change to pointer on hover
+}
+
+/**
+ * Set all photos to their default size and class except for the given photo ID
+ * @param photoId
+ */
+function reducePhotos(photoId)
+{
+	var numPhotos = $('.pure-img-responsive').length + 2;  // get number of photos on page, add 2 to cover (up to) 2 already selected item
+	for (var i = 1; i < numPhotos + 1; i++)
+	{
+		if (i != photoId)
+		{
+			$("#photo" + i).css('width', "200px");
+			$("#photo" + i).css('height', "150px");
+			$("#photo" + i).addClass("pure-img-responsive");
+		}
+	}
 }
