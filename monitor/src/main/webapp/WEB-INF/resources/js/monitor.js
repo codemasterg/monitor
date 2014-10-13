@@ -278,7 +278,8 @@ function togglePhoto(photoId)
 		$(this).css('width', function(_ , cur){
 			if (cur === '200px')
 			{
-				return '1024px';
+				var wid = $(window).width();
+				return (wid * .55) + 'px';
 			}
 			else
 			{
@@ -291,8 +292,9 @@ function togglePhoto(photoId)
 		  $(this).css('height', function(_ , cur){
 			  if (cur === '150px')
 			  {
+				  var hit = $(window).height();
 				  $(this).removeClass("pure-img-responsive");
-				  return '768px';
+				  return (hit * .70) + 'px';
 			  }
 			  else
 			  {
