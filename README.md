@@ -9,6 +9,7 @@ Dependencies (managed by Maven):
 - PI4J to integrate passive infra-red sensor and illuminate / pulse LED.
 - Spring core and Spring MVC to implement web controller and web service for this application.
 - JSPs and JQuery to implement browser interface.
+- Apache Tiles to enable reuse of common JSPs and enforce consistent page layout
 - Java Mail API so emails / texts can be sent when motion detected
 - raspistill for photo capture
 - MapDB for NoSQL data persistence
