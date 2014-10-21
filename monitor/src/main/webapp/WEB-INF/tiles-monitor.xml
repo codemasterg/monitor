@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+  <definition name="monitor.abstract.base" template="/WEB-INF/layouts/left-menu-template.jsp">
+    <put-attribute name="title" value="Monitor Manager" />
+    <put-attribute name="header" value="/WEB-INF/jsp/header.jsp" />
+    <put-attribute name="menu" value="/WEB-INF/jsp/menu.jsp" />
+    <put-attribute name="body" value="" />
+    <put-attribute name="footer" value="/WEB-INF/jsp/footer.jsp" />
+  </definition>
+  
+  <definition name="index" extends="monitor.abstract.base">
+  	<put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
+  </definition>
+  
+  <definition name="control" extends="monitor.abstract.base">
+  	<put-attribute name="body" value="/WEB-INF/jsp/control.jsp" />
+  </definition>
+  
+   <definition name="log" extends="monitor.abstract.base">
+  	<put-attribute name="body" value="/WEB-INF/jsp/log.jsp" />
+  </definition>
+  
+  <definition name="reset" extends="monitor.abstract.base">
+  	<put-attribute name="body" value="/WEB-INF/jsp/reset.jsp" />
+  </definition>
+  
+</tiles-definitions>

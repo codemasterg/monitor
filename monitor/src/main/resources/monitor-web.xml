@@ -21,10 +21,25 @@
 	 -->
 	<mvc:resources mapping="/resources/**" location="/WEB-INF/resources/" /> 
 	
+	<!--  
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/jsps/" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
 		<property name="suffix" value=".jsp" />
+	</bean>
+	-->
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView" />
+	</bean>
+
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles-monitor.xml</value>
+			</list>
+		</property>
 	</bean>
 
 </beans>
