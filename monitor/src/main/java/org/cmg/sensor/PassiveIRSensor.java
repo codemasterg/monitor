@@ -169,6 +169,15 @@ public class PassiveIRSensor extends Observable implements Sensor  {
 	        this.sensorLED.pulse(1000, true); // set second argument to 'true' use a blocking call	        	
 		}
 	}
+	
+	@Override
+	public void triggerAllObservers()
+	{
+		this.setChanged();
+		GpioPinDigitalStateChangeEvent event = new GpioPinDigitalStateChangeEvent(this, null, PinState.HIGH);
+		
+		this.notifyObservers(event);
+	}
 
 	public DB getDatabase() {
 		return database;

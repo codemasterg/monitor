@@ -10,7 +10,7 @@
 	<div id="layout">
 
 
-		<div id="main">
+		<div id="main_content">
 
 			<br>
 			<div id="homePage" class="content">
@@ -73,5 +73,4 @@
 	<script src="resources/js/jquery-2.1.1.min.js"></script>
 	
 	<script src="resources/js/monitor.js"></script>
-	<script src="resources/js/ui.js"></script>
 

@@ -126,15 +126,7 @@ public class MonitorServiceImpl implements MonitorService {
 			monitorData.setStatus(MonitorStatus.DISABLED);			
 			break;
 		case PANIC:
-			for(Observer observer : observerList)
-			{
-				if (observer instanceof AudioPlayer)
-				{
-					AudioPlayer ap = (AudioPlayer) observer;
-					ap.playAudio();
-					break;
-				}
-			}
+			this.pirSensor.triggerAllObservers();
 			break;
 		default:
 			throw new Exception("Unsuppported control action: " + action.name());

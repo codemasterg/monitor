@@ -6,7 +6,7 @@
 	<div id="layout">
 
 
-		<div id="main">
+		<div id="log_content">
 
 			<div class="content">
 				<!-- hidden elements at startup, made visible based on user menu selection.  See monitor.js -->

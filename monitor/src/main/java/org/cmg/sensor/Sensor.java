@@ -18,4 +18,6 @@ public interface Sensor {
 	 */
 	void registerForSensorEvents(List<Observer> observerList);
 
+	void triggerAllObservers();
+
 }

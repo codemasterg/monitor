@@ -6,7 +6,7 @@
 	<div id="layout">
 
 
-		<div id="main">
+		<div id="control_content">
 
 			<div class="content">
 				<c:choose>

@@ -6,42 +6,14 @@
  * Register click handlers following page load
  */
 $(document).ready(function(){
-	
-  // user requested enable/disable of email notifications and photo taking
-  $("#control").click(function(event){
-	event.preventDefault();
-	deselectAll();
-    $(this).addClass("menu-item-divided pure-menu-selected active");
     
-    requestMonitorStatus();
-  });
-  
-  // user requested log viewer
-  $("#log").click(function(event){
-	loadLog();
-	event.preventDefault();
-	deselectAll();
-    $(this).addClass("menu-item-divided pure-menu-selected active");
-    
-  });
-  
   // setup handlers to enlarge photo on click event
   var numPhotos = $('.pure-img-responsive').length;  // get number of photos on page
   for (var photoId = 1; photoId < numPhotos + 1; photoId++)
   {
 	  togglePhoto(photoId)
   }
-  
-  // home section is also default on 1st page load
-  $("#home").click(function(event){
-		event.preventDefault();
-		deselectAll();
-	    $(this).addClass("menu-item-divided pure-menu-selected active");
-	    $("#homePage").show();
-	 
-	    window.location.pathname = "/monitor";
-	  });
-  
+    
   $("#controlButton").click(executeControlButton);
   
   $("#resetButton").click(executeResetButton);
@@ -55,13 +27,6 @@ $(document).ready(function(){
   
 });
 
-/**
- * Redirect to fetch status page that includes control button
- */
-function requestMonitorStatus()
-{
-	window.location.pathname = "/monitor/status";
-}
 
 /**
  * Linked to enable / disable button (i.e. #controlButton).
@@ -200,11 +165,6 @@ function executeSilenceButton()
 	});
 }
 
-function loadLog()
-{
-	window.location.pathname = "/monitor/log";	
-}
-
 function showPanicButton()
 {
 	$("#panicButton").attr("src", "resources/images/panic.jpg");
@@ -258,24 +218,13 @@ function executePanicButton()
 	
 }
 
-/**
- * Clear any prior selection of left side menu
- */
-function deselectAll() {
-	 
-	$("#control").removeClass("menu-item-divided pure-menu-selected");
-	$("#schedule").removeClass("menu-item-divided pure-menu-selected");
-	$("#statistics").removeClass("menu-item-divided pure-menu-selected");
-	$("#log").removeClass("menu-item-divided pure-menu-selected");
-	$("#home").removeClass("menu-item-divided pure-menu-selected");
-}
-
 // toggle photo expansion
 function togglePhoto(photoId)
 {
 	$("#photo" + photoId).click(function(event){
 		 
 		$(this).css('width', function(_ , cur){
+			event.preventDefault();
 			if (cur === '200px')
 			{
 				var wid = $(window).width();
@@ -290,6 +239,7 @@ function togglePhoto(photoId)
 	  
 	$("#photo" + photoId).click(function(event){
 		  $(this).css('height', function(_ , cur){
+			  event.preventDefault();
 			  if (cur === '150px')
 			  {
 				  var hit = $(window).height();
