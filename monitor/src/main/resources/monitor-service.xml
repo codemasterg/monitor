@@ -24,6 +24,7 @@
 		<constructor-arg value="${org.cmg.data.filepath}"></constructor-arg>
 	</bean>
 
+	<!-- produce an instance of a db factory -->
 	<bean id="dbFactory" class="org.mapdb.DBMaker"
 		factory-method="newFileDB">
 		<constructor-arg ref="dbFile" />
@@ -35,6 +36,7 @@
 		factory-method="closeOnJvmShutdown">
 	</bean>
 	
+	<!-- using the db factory as a bean, call make() on the instance to produce a DB -->
 	<bean id="database"
 		factory-bean="dbFactory" 
 		factory-method="make">
