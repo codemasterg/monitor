@@ -21,7 +21,7 @@ import com.demo.qualifier.TimeZone;
  *
  */
 @WebService   
-public class CurrentDate { 
+public class CurrentDate {  
 	
 	@Inject @LongForm DateFormatter longDate;
 	
