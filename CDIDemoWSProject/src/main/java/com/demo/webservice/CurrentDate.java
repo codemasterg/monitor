@@ -20,7 +20,7 @@ import com.demo.qualifier.TimeZone;
  * @author greg
  *
  */
-@WebService
+@WebService 
 public class CurrentDate {
 	
 	@Inject @LongForm DateFormatter longDate;
